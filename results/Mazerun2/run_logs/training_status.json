@@ -1,0 +1,38 @@
+{
+    "CubeAgent": {
+        "checkpoints": [
+            {
+                "steps": 499984,
+                "file_path": "results\\Mazerun2\\CubeAgent\\CubeAgent-499984.onnx",
+                "reward": 0.800000011920929,
+                "creation_time": 1741562206.145706,
+                "auxillary_file_paths": [
+                    "results\\Mazerun2\\CubeAgent\\CubeAgent-499984.pt"
+                ]
+            },
+            {
+                "steps": 500021,
+                "file_path": "results\\Mazerun2\\CubeAgent\\CubeAgent-500021.onnx",
+                "reward": 0.800000011920929,
+                "creation_time": 1741562206.2084067,
+                "auxillary_file_paths": [
+                    "results\\Mazerun2\\CubeAgent\\CubeAgent-500021.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 500021,
+            "file_path": "results\\Mazerun2\\CubeAgent.onnx",
+            "reward": 0.800000011920929,
+            "creation_time": 1741562206.2084067,
+            "auxillary_file_paths": [
+                "results\\Mazerun2\\CubeAgent\\CubeAgent-500021.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.6.0+cpu"
+    }
+}

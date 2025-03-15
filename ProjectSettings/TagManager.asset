@@ -7,14 +7,16 @@ TagManager:
   - Price
   - Wall
   - Target
+  - Maze
+  - Agent
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Agent
   - Water
   - UI
-  - 
+  - Wall
   - 
   - 
   - 

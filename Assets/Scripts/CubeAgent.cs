@@ -4,6 +4,7 @@ using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 using UnityEngine.UIElements;
+using UnityEngine.InputSystem;
 
 public class CubeAgent : Agent
 {
@@ -19,39 +20,60 @@ public class CubeAgent : Agent
         rBody = GetComponent<Rigidbody>();
     }
 
+    private void AssignTargetWall()
+    {
+        // Trova i muri con i nomi "Target_R" e "Target_L"
+        GameObject targetR = GameObject.Find("Target_R");
+        GameObject targetL = GameObject.Find("Target_L");
+
+        // Controlla se i muri esistono
+        if (targetR != null && targetL != null)
+        {
+            // Assegna il tag "Target" a uno dei due muri a caso
+            if (Random.value > 0.5f)
+            {
+                targetR.tag = "Target";
+                targetL.tag = "Wall";
+                // Assegna il materiale rosso al muro target e il materiale giallo all'altro muro
+                targetR.GetComponent<Renderer>().material.color = Color.red;
+                targetL.GetComponent<Renderer>().material.color = Color.yellow;
+                targetR.GetComponent<Collider>().isTrigger = true;
+                targetL.GetComponent<Collider>().isTrigger = false;
+            }
+            else
+            {
+                targetR.tag = "Wall";
+                targetL.tag = "Target";
+                // Assegna il materiale rosso al muro target e il materiale giallo all'altro muro
+                targetR.GetComponent<Renderer>().material.color = Color.yellow;
+                targetL.GetComponent<Renderer>().material.color = Color.red;
+                targetR.GetComponent<Collider>().isTrigger = false;
+                targetL.GetComponent<Collider>().isTrigger = true;
+            }
+        }
+    }
+
+
     public Transform Target;
     public override void OnEpisodeBegin()
     {
+       
         this.transform.position = startPosition;
         this.rBody.linearVelocity = Vector3.zero;
         this.rBody.angularVelocity = Vector3.zero;
         this.transform.rotation = Quaternion.Euler(Vector3.up * Random.Range(0f, 360f));
+        //AssignTargetWall();
+
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
-        // Convert actions from Discrete (0, 1, 2) to expected input values (-1, 0, +1)
-        // of the character controller
         float vertical = actionBuffers.DiscreteActions[0] <= 1 ? actionBuffers.DiscreteActions[0] : -1;
         float horizontal = actionBuffers.DiscreteActions[1] <= 1 ? actionBuffers.DiscreteActions[1] : -1;
-        //bool jump = actionBuffers.DiscreteActions[2] > 0;
 
         characterController.ForwardInput = vertical;
         characterController.TurnInput = horizontal;
-        //characterController.JumpInput = jump;
 
-        // Fell off platform
-        if (this.transform.position.y < 0)
-        {
-            SetReward(-0.5f);
-            EndEpisode();
-        }
-
-        // Punish if jumps and lands at the same height
-        //if (jump && Mathf.Approximately(this.transform.position.y, startPosition.y))
-        //{
-        //    SetReward(-0.2f);
-        //}
     }
 
     void OnTriggerEnter(Collider other)
@@ -62,6 +84,30 @@ public class CubeAgent : Agent
             EndEpisode();
         }
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            SetReward(-0.2f);
+        }
+    }
+
+
+
+    public override void CollectObservations(VectorSensor sensor)
+    {
+        //TOTALE 5 OSSERVAZIONI
+
+        // SONO 3 OSSERVAZIONI (X Y Z)
+        sensor.AddObservation(this.transform.localPosition);
+
+        sensor.AddObservation(rBody.linearVelocity.x);
+        sensor.AddObservation(rBody.linearVelocity.z);
+
+
+    }
+
 
     public override void Heuristic(in ActionBuffers actionsOut)
     {

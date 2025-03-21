@@ -1,23 +1,23 @@
 {
-    "CubeAgent": {
+    "CubeAgent2": {
         "checkpoints": [
             {
-                "steps": 4928,
-                "file_path": "results\\MazerunNoJump_5\\CubeAgent\\CubeAgent-4928.onnx",
-                "reward": null,
-                "creation_time": 1741724598.5626988,
+                "steps": 294400,
+                "file_path": "results\\MazerunNoJump_5\\CubeAgent2\\CubeAgent2-294400.onnx",
+                "reward": -0.625,
+                "creation_time": 1742502520.3449726,
                 "auxillary_file_paths": [
-                    "results\\MazerunNoJump_5\\CubeAgent\\CubeAgent-4928.pt"
+                    "results\\MazerunNoJump_5\\CubeAgent2\\CubeAgent2-294400.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 4928,
-            "file_path": "results\\MazerunNoJump_5\\CubeAgent.onnx",
-            "reward": null,
-            "creation_time": 1741724598.5626988,
+            "steps": 294400,
+            "file_path": "results\\MazerunNoJump_5\\CubeAgent2.onnx",
+            "reward": -0.625,
+            "creation_time": 1742502520.3449726,
             "auxillary_file_paths": [
-                "results\\MazerunNoJump_5\\CubeAgent\\CubeAgent-4928.pt"
+                "results\\MazerunNoJump_5\\CubeAgent2\\CubeAgent2-294400.pt"
             ]
         }
     },

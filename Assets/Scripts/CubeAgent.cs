@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 
 public class CubeAgent : Agent
 {
+    //https://www.youtube.com/watch?v=liWdLrv8pY0&list=PLhOLzjLZmaVdpnux85hqEGEBeqzcQsYNt&index=3
     Rigidbody rBody;
 
     private Vector3 startPosition;
@@ -85,28 +86,34 @@ public class CubeAgent : Agent
         }
     }
 
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Wall"))
         {
-            SetReward(-0.2f);
+            SetReward(-0.2f); // Increase penalty with each collision
+
         }
     }
 
 
-
     public override void CollectObservations(VectorSensor sensor)
     {
-        //TOTALE 5 OSSERVAZIONI
+        //TOTALE 8 OSSERVAZIONI
 
-        // SONO 3 OSSERVAZIONI (X Y Z)
+        // posizione locale dell'agente
         sensor.AddObservation(this.transform.localPosition);
 
-        sensor.AddObservation(rBody.linearVelocity.x);
-        sensor.AddObservation(rBody.linearVelocity.z);
+        //// velocit� dell'agente
+        //sensor.AddObservation(rBody.linearVelocity.x);
+        //sensor.AddObservation(rBody.linearVelocity.z);
 
+        //// direzione dell'agente
+        //sensor.AddObservation(this.transform.forward);
+        //sensor.AddObservation(rBody.angularVelocity.y);
 
     }
+
 
 
     public override void Heuristic(in ActionBuffers actionsOut)

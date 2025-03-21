@@ -1,4 +1,35 @@
 {
+    "CubeAgent2": {
+        "checkpoints": [
+            {
+                "steps": 499970,
+                "file_path": "results\\MazerunNoJump_2\\CubeAgent2\\CubeAgent2-499970.onnx",
+                "reward": 4.859872611464968,
+                "creation_time": 1742558017.3303726,
+                "auxillary_file_paths": [
+                    "results\\MazerunNoJump_2\\CubeAgent2\\CubeAgent2-499970.pt"
+                ]
+            },
+            {
+                "steps": 513199,
+                "file_path": "results\\MazerunNoJump_2\\CubeAgent2\\CubeAgent2-513199.onnx",
+                "reward": null,
+                "creation_time": 1742558069.3850944,
+                "auxillary_file_paths": [
+                    "results\\MazerunNoJump_2\\CubeAgent2\\CubeAgent2-513199.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 513199,
+            "file_path": "results\\MazerunNoJump_2\\CubeAgent2.onnx",
+            "reward": null,
+            "creation_time": 1742558069.3850944,
+            "auxillary_file_paths": [
+                "results\\MazerunNoJump_2\\CubeAgent2\\CubeAgent2-513199.pt"
+            ]
+        }
+    },
     "metadata": {
         "stats_format_version": "0.3.0",
         "mlagents_version": "1.1.0",

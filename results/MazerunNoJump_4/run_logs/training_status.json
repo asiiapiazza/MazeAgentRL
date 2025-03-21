@@ -1,23 +1,41 @@
 {
-    "CubeAgent": {
+    "CubeAgent2": {
         "checkpoints": [
             {
-                "steps": 10458,
-                "file_path": "results\\MazerunNoJump_4\\CubeAgent\\CubeAgent-10458.onnx",
-                "reward": 1.0,
-                "creation_time": 1741723370.4118834,
+                "steps": 187812,
+                "file_path": "results\\MazerunNoJump_44\\CubeAgent2\\CubeAgent2-187812.onnx",
+                "reward": 4.333333333333333,
+                "creation_time": 1742316611.451734,
                 "auxillary_file_paths": [
-                    "results\\MazerunNoJump_4\\CubeAgent\\CubeAgent-10458.pt"
+                    "results\\MazerunNoJump_44\\CubeAgent2\\CubeAgent2-187812.pt"
+                ]
+            },
+            {
+                "steps": 202039,
+                "file_path": "results\\MazerunNoJump_44\\CubeAgent2\\CubeAgent2-202039.onnx",
+                "reward": -21.555555555555557,
+                "creation_time": 1742316697.1145372,
+                "auxillary_file_paths": [
+                    "results\\MazerunNoJump_44\\CubeAgent2\\CubeAgent2-202039.pt"
+                ]
+            },
+            {
+                "steps": 284768,
+                "file_path": "results\\MazerunNoJump_44\\CubeAgent2\\CubeAgent2-284768.onnx",
+                "reward": 4.714285714285714,
+                "creation_time": 1742317490.9291995,
+                "auxillary_file_paths": [
+                    "results\\MazerunNoJump_44\\CubeAgent2\\CubeAgent2-284768.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 10458,
-            "file_path": "results\\MazerunNoJump_4\\CubeAgent.onnx",
-            "reward": 1.0,
-            "creation_time": 1741723370.4118834,
+            "steps": 284768,
+            "file_path": "results\\MazerunNoJump_44\\CubeAgent2.onnx",
+            "reward": 4.714285714285714,
+            "creation_time": 1742317490.9291995,
             "auxillary_file_paths": [
-                "results\\MazerunNoJump_4\\CubeAgent\\CubeAgent-10458.pt"
+                "results\\MazerunNoJump_44\\CubeAgent2\\CubeAgent2-284768.pt"
             ]
         }
     },

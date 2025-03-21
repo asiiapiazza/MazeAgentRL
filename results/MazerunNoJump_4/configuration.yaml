@@ -1,31 +1,31 @@
 default_settings: null
 behaviors:
-  CubeAgent:
+  CubeAgent2:
     trainer_type: ppo
     hyperparameters:
-      batch_size: 10
-      buffer_size: 100
+      batch_size: 1024
+      buffer_size: 10240
       learning_rate: 0.0003
-      beta: 0.0005
+      beta: 0.005
       epsilon: 0.2
-      lambd: 0.99
+      lambd: 0.95
       num_epoch: 3
       shared_critic: false
       learning_rate_schedule: linear
-      beta_schedule: constant
+      beta_schedule: linear
       epsilon_schedule: linear
     checkpoint_interval: 500000
     network_settings:
       normalize: false
-      hidden_units: 128
-      num_layers: 2
+      hidden_units: 256
+      num_layers: 1
       vis_encode_type: simple
       memory: null
       goal_conditioning_type: hyper
       deterministic: false
     reward_signals:
       extrinsic:
-        gamma: 0.99
+        gamma: 0.9
         strength: 1.0
         network_settings:
           normalize: false
@@ -35,12 +35,12 @@ behaviors:
           memory: null
           goal_conditioning_type: hyper
           deterministic: false
-    init_path: results\MazerunNoJump_3\CubeAgent\checkpoint.pt
+    init_path: null
     keep_checkpoints: 5
     even_checkpoints: false
-    max_steps: 500000
+    max_steps: 2000000
     time_horizon: 64
-    summary_freq: 10000
+    summary_freq: 50000
     threaded: false
     self_play: null
     behavioral_cloning: null
@@ -59,17 +59,17 @@ engine_settings:
   width: 84
   height: 84
   quality_level: 5
-  time_scale: 20
+  time_scale: 20.0
   target_frame_rate: -1
   capture_frame_rate: 60
   no_graphics: false
   no_graphics_monitor: false
 environment_parameters: null
 checkpoint_settings:
-  run_id: MazerunNoJump_4
-  initialize_from: MazerunNoJump_3
+  run_id: MazerunNoJump_44
+  initialize_from: null
   load_model: false
-  resume: false
+  resume: true
   force: true
   train_model: false
   inference: false

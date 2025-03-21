@@ -79,8 +79,8 @@ MonoBehaviour:
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 0
-      BranchSizes: 030000000300000002000000
-    VectorActionSize: 030000000300000002000000
+      BranchSizes: 0300000003000000
+    VectorActionSize: 0300000003000000
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
@@ -137,7 +137,7 @@ MonoBehaviour:
   - Wall
   - Target
   m_RaysPerDirection: 6
-  m_MaxRayDegrees: 70
+  m_MaxRayDegrees: 90
   m_SphereCastRadius: 0.1
   m_RayLength: 20
   m_RayLayerMask:
@@ -180,7 +180,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 4000
+  MaxStep: 6000
   Target: {fileID: 0}
 --- !u!114 &4839762585688608274
 MonoBehaviour:
@@ -226,8 +226,8 @@ Transform:
   m_GameObject: {fileID: 6779273956431498498}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.0163, y: 0.4995, z: -0.148}
-  m_LocalScale: {x: 0.5346462, y: 0.9990671, z: 1}
+  m_LocalPosition: {x: 0.0099, y: 0.4995, z: -0.0088}
+  m_LocalScale: {x: 0.53494954, y: 0.9990671, z: 0.55979717}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3501175839940180801}

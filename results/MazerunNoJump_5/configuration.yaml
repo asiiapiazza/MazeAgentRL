@@ -14,7 +14,7 @@ behaviors:
       learning_rate_schedule: linear
       beta_schedule: linear
       epsilon_schedule: linear
-    checkpoint_interval: 500000
+    checkpoint_interval: 50000
     network_settings:
       normalize: false
       hidden_units: 256
@@ -40,15 +40,15 @@ behaviors:
         strength: 0.02
         network_settings:
           normalize: false
-          hidden_units: 256
+          hidden_units: 128
           num_layers: 2
           vis_encode_type: simple
           memory: null
           goal_conditioning_type: hyper
           deterministic: false
         learning_rate: 0.0003
-        encoding_size: 256
-    init_path: results\MazerunNoJump_44\CubeAgent2\checkpoint.pt
+        encoding_size: null
+    init_path: results\MazerunNoJump_5\CubeAgent2\checkpoint.pt
     keep_checkpoints: 5
     even_checkpoints: false
     max_steps: 2000000
@@ -79,8 +79,8 @@ engine_settings:
   no_graphics_monitor: false
 environment_parameters: null
 checkpoint_settings:
-  run_id: MazerunNoJump_5
-  initialize_from: MazerunNoJump_44
+  run_id: MazerunNoJump_555
+  initialize_from: MazerunNoJump_5
   load_model: false
   resume: false
   force: true
@@ -88,5 +88,5 @@ checkpoint_settings:
   inference: false
   results_dir: results
 torch_settings:
-  device: null
+  device: cuda
 debug: false

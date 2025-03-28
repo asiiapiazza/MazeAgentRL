@@ -9,6 +9,7 @@ TagManager:
   - Target
   - Maze
   - Agent
+  - Floor
   layers:
   - Default
   - TransparentFX

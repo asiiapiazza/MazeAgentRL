@@ -5,39 +5,80 @@ using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using static UnityEngine.GraphicsBuffer;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
+using UnityEngine.ProBuilder;
+using UnityEngine.ProBuilder.MeshOperations;
+
+
+
 
 public class CubeAgent2 : Agent
 {
     [SerializeField] private float moveSpeed = 4f;
     private Rigidbody rb;
     private Vector3 startPosition;
-    // Dimensione delle celle della griglia
-
-    // HashSet per tenere traccia delle celle visitate
-    private HashSet<Vector3Int> visitedCells = new HashSet<Vector3Int>();
+    public MeshCollider meshCollider;
 
 
     public override void Initialize()
     {
         rb = GetComponent<Rigidbody>();
-        startPosition = transform.position;
+
+        //startPosition = transform.position;
 
     }
 
     public override void OnEpisodeBegin()
     {
-        this.transform.position = startPosition;
+        // crea metodo per spostare il target in una posizione casuale all'interno del labirinto
+        this.transform.position = GetTriangle();
         this.rb.linearVelocity = Vector3.zero;
         this.rb.angularVelocity = Vector3.zero;
         this.transform.rotation = Quaternion.Euler(Vector3.up * Random.Range(0f, 360f));
 
-        //// Trova tutti gli oggetti con il tag "Maze"
-        GameObject[] mazes = GameObject.FindGameObjectsWithTag("Maze");
 
-        foreach (GameObject maze in mazes)
+        //// Trova tutti gli oggetti con il tag "Maze"
+        //GameObject[] mazes = GameObject.FindGameObjectsWithTag("Maze");
+
+        //foreach (GameObject maze in mazes)
+        //{
+        //    AssignTargetWall(maze);
+        //}
+
+
+    }
+
+    private Vector3 GetTriangle()
+    {
+        Mesh mesh = meshCollider.sharedMesh;
+        int[] triangles = mesh.triangles;
+        Vector3[] vertices = mesh.vertices;
+
+        int randomIndex = Random.Range(0, triangles.Length / 3) * 3; // Scegli un triangolo casuale
+
+        Vector3 v1 = vertices[triangles[randomIndex]];
+        Vector3 v2 = vertices[triangles[randomIndex + 1]];
+        Vector3 v3 = vertices[triangles[randomIndex + 2]];
+
+        return GetRandomPointInTriangle(v1, v2, v3);
+    }
+
+    private Vector3 GetRandomPointInTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
+    {
+        float a = Random.value;
+        float b = Random.value;
+
+        // Ensure the point is inside the triangle
+        if (a + b > 1)
         {
-            AssignTargetWall(maze);
+            a = 1 - a;
+            b = 1 - b;
         }
+
+        float c = 1 - a - b;
+
+        var localPoint =  a * v1 + b * v2 + c * v3;
+        return meshCollider.transform.TransformPoint(localPoint);
     }
 
     private void AssignTargetWall(GameObject maze)
@@ -69,6 +110,7 @@ public class CubeAgent2 : Agent
     }
 
 
+
     public override void CollectObservations(VectorSensor sensor)
     {
         sensor.AddObservation(transform.localPosition);
@@ -98,7 +140,7 @@ public class CubeAgent2 : Agent
         // primo branch con 2 casi: avanti o indietro
         switch (moveForward)
         {
-           
+
             case 1:
                 rb.MovePosition(transform.position + move);
                 break;
@@ -154,4 +196,5 @@ public class CubeAgent2 : Agent
 
         }
     }
+
 }

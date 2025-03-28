@@ -1,5 +1,26 @@
 {
   "dependencies": {
+    "com.ishape.geometry": {
+      "version": "https://github.com/iShapeUnity/Geometry.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.mathematics": "1.3.1",
+        "com.unity.collections": "2.2.0"
+      },
+      "hash": "57bf3cd03759dd40899c375ae3052b0534aeac24"
+    },
+    "com.ishape.triangulation": {
+      "version": "https://github.com/iShapeUnity/Triangulation.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.ishape.geometry": "0.0.5",
+        "com.unity.mathematics": "1.3.1",
+        "com.unity.collections": "2.2.0"
+      },
+      "hash": "86a829327dfeae32ae9cb1afec0cc3bbfb548fb6"
+    },
     "com.unity.ai.navigation": {
       "version": "2.0.3",
       "depth": 0,
@@ -107,6 +128,18 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.probuilder": {
+      "version": "6.0.5",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.shadergraph": "17.0.3",
+        "com.unity.modules.imgui": "1.0.0",
+        "com.unity.modules.physics": "1.0.0",
+        "com.unity.settings-manager": "1.0.3"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.recorder": {
       "version": "5.1.2",
       "depth": 0,
@@ -177,6 +210,13 @@
         "com.unity.collections": "2.4.3",
         "com.unity.modules.imageconversion": "1.0.0"
       },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.settings-manager": {
+      "version": "2.0.1",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.shadergraph": {

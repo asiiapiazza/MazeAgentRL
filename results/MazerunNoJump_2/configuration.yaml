@@ -3,8 +3,8 @@ behaviors:
   CubeAgent2:
     trainer_type: ppo
     hyperparameters:
-      batch_size: 1024
-      buffer_size: 10240
+      batch_size: 128
+      buffer_size: 2048
       learning_rate: 0.0003
       beta: 0.005
       epsilon: 0.2
@@ -14,18 +14,18 @@ behaviors:
       learning_rate_schedule: linear
       beta_schedule: linear
       epsilon_schedule: linear
-    checkpoint_interval: 500000
+    checkpoint_interval: 20000
     network_settings:
       normalize: false
       hidden_units: 256
-      num_layers: 1
+      num_layers: 2
       vis_encode_type: simple
       memory: null
       goal_conditioning_type: hyper
       deterministic: false
     reward_signals:
       extrinsic:
-        gamma: 0.9
+        gamma: 0.99
         strength: 1.0
         network_settings:
           normalize: false
@@ -35,25 +35,12 @@ behaviors:
           memory: null
           goal_conditioning_type: hyper
           deterministic: false
-      curiosity:
-        gamma: 0.99
-        strength: 0.04
-        network_settings:
-          normalize: false
-          hidden_units: 256
-          num_layers: 2
-          vis_encode_type: simple
-          memory: null
-          goal_conditioning_type: hyper
-          deterministic: false
-        learning_rate: 0.0003
-        encoding_size: 256
     init_path: results\MazerunNoJump_1\CubeAgent2\checkpoint.pt
     keep_checkpoints: 5
     even_checkpoints: false
-    max_steps: 2000000
-    time_horizon: 64
-    summary_freq: 50000
+    max_steps: 1000000
+    time_horizon: 1024
+    summary_freq: 10000
     threaded: false
     self_play: null
     behavioral_cloning: null
@@ -72,7 +59,7 @@ engine_settings:
   width: 84
   height: 84
   quality_level: 5
-  time_scale: 20.0
+  time_scale: 20
   target_frame_rate: -1
   capture_frame_rate: 60
   no_graphics: false

@@ -1,0 +1,65 @@
+{
+    "CubeAgent2": {
+        "checkpoints": [
+            {
+                "steps": 219992,
+                "file_path": "results\\GetTarget8\\CubeAgent2\\CubeAgent2-219992.onnx",
+                "reward": 798.4496124031008,
+                "creation_time": 1744574403.4320776,
+                "auxillary_file_paths": [
+                    "results\\GetTarget8\\CubeAgent2\\CubeAgent2-219992.pt"
+                ]
+            },
+            {
+                "steps": 239988,
+                "file_path": "results\\GetTarget8\\CubeAgent2\\CubeAgent2-239988.onnx",
+                "reward": 696.969696969697,
+                "creation_time": 1744574456.4663785,
+                "auxillary_file_paths": [
+                    "results\\GetTarget8\\CubeAgent2\\CubeAgent2-239988.pt"
+                ]
+            },
+            {
+                "steps": 259985,
+                "file_path": "results\\GetTarget8\\CubeAgent2\\CubeAgent2-259985.onnx",
+                "reward": 692.3076923076923,
+                "creation_time": 1744574509.1018815,
+                "auxillary_file_paths": [
+                    "results\\GetTarget8\\CubeAgent2\\CubeAgent2-259985.pt"
+                ]
+            },
+            {
+                "steps": 279997,
+                "file_path": "results\\GetTarget8\\CubeAgent2\\CubeAgent2-279997.onnx",
+                "reward": 763.1578947368421,
+                "creation_time": 1744574560.6787782,
+                "auxillary_file_paths": [
+                    "results\\GetTarget8\\CubeAgent2\\CubeAgent2-279997.pt"
+                ]
+            },
+            {
+                "steps": 297228,
+                "file_path": "results\\GetTarget8\\CubeAgent2\\CubeAgent2-297228.onnx",
+                "reward": 833.3333333333334,
+                "creation_time": 1744574605.3207278,
+                "auxillary_file_paths": [
+                    "results\\GetTarget8\\CubeAgent2\\CubeAgent2-297228.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 297228,
+            "file_path": "results\\GetTarget8\\CubeAgent2.onnx",
+            "reward": 833.3333333333334,
+            "creation_time": 1744574605.3207278,
+            "auxillary_file_paths": [
+                "results\\GetTarget8\\CubeAgent2\\CubeAgent2-297228.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.6.0+cu126"
+    }
+}

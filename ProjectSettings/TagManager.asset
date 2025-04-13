@@ -10,6 +10,8 @@ TagManager:
   - Maze
   - Agent
   - Floor
+  - Reward
+  - VisitedFloor
   layers:
   - Default
   - TransparentFX

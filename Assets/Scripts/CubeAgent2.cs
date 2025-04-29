@@ -13,6 +13,7 @@ public class CubeAgent2 : Agent
 
     private Vector3 startPosition;
     public GameObject floor;
+    public GameObject wall; // Prefab del muro da generare
 
     private int nonStraightMoveCount = 0; // Contatore dei movimenti non dritti
     private Transform[] floorCells;
@@ -21,6 +22,7 @@ public class CubeAgent2 : Agent
     public GameObject targetL;
     public GameObject targetR;
     public GameObject targetF;
+    public GameObject targetN;
 
 
     private GameObject lastVisitedCell = null; // Memorizza l'ultima cella visitata
@@ -30,7 +32,8 @@ public class CubeAgent2 : Agent
 
     public override void Initialize()
     {
-        //Time.timeScale = 1f;
+        //provaaa
+        Time.timeScale = 1f;
 
         rb = GetComponent<Rigidbody>();
         startPosition = transform.position;
@@ -39,7 +42,7 @@ public class CubeAgent2 : Agent
         InitializeCells();
 
         //Prendi le celle del pavimento
-       floorCells = floor.GetComponentsInChildren<Transform>();
+        floorCells = floor.GetComponentsInChildren<Transform>();
 
         // Filtra i figli per escludere l'oggetto floor stesso
         foreach (Transform cell in floorCells)
@@ -58,29 +61,104 @@ public class CubeAgent2 : Agent
         ResetCells();
         nonStraightMoveCount = 0; // Resetta il contatore dei movimenti non dritti
 
-        //this.transform.position = startPosition;
+                //this.transform.position = startPosition;
 
         //this.transform.position = RandomFloorPosition();
         //this.transform.localPosition = new Vector3(Random.Range(-23f, 26f), 0.75f, Random.Range(-26f, 23f));
         //targetL.transform.localPosition = new Vector3(Random.Range(-23f, 26f), 1.5f, Random.Range(-26f, 23f));
 
 
-        // Controlla se targetL non ha niente vicino ai lati destro e sinistro
+        // 
+
+        //this.transform.position = RandomFloorPosition();
+        //Vector3 targetPosition;
+        //do
+        //{
+        //    targetPosition = RandomFloorPosition();
+        //} while (targetPosition == this.transform.position);
+        //targetL.transform.position = targetPosition;
+
+
+        //// Controlla se targetL non ha niente vicino ai lati destro e sinistro
         //if (!Physics.Raycast(targetL.transform.position, targetL.transform.right, 2f) ||
         //    !Physics.Raycast(targetL.transform.position, -targetL.transform.right, 2f))
         //{
         //    targetL.transform.Rotate(0f, 90f, 0f);
         //}
 
+
         this.transform.position = RandomFloorPosition();
         //targetL.transform.position = RandomFloorPosition();
+
 
         currentCell = GetCurrentCell();
 
         this.rb.linearVelocity = Vector3.zero;
         this.rb.angularVelocity = Vector3.zero;
         this.transform.rotation = Quaternion.Euler(Vector3.up * Random.Range(0f, 360f));
-        AssignTargetWall();
+        //AssignTargetWall();
+        PickWallAsTarget();
+
+    }
+
+
+    private void AssignTargetWall()
+    {
+        List<GameObject> targets = new List<GameObject>();
+
+        if (targetR != null) targets.Add(targetR);
+        if (targetL != null) targets.Add(targetL);
+        if (targetF != null) targets.Add(targetF);
+        if (targetN != null) targets.Add(targetN);
+
+        if (targets.Count == 0) return;
+
+        int targetIndex = Random.Range(0, targets.Count);
+
+        for (int i = 0; i < targets.Count; i++)
+        {
+            AssignWallProperties(targets[i], i == targetIndex);
+        }
+    }
+
+    private void AssignWallProperties(GameObject wall, bool isTarget)
+    {
+        wall.tag = isTarget ? "Target" : "Wall";
+        //assegna colore #ECA12F al rendere
+        ColorUtility.TryParseHtmlString("#ECA12F", out Color color);
+        wall.GetComponent<Renderer>().material.color = isTarget ? Color.magenta : color;
+        wall.GetComponent<Collider>().isTrigger = isTarget;
+    }
+
+
+
+    private void PickWallAsTarget()
+    {
+
+        //prendi figli di wall 
+        Transform[] walls = wall.GetComponentsInChildren<Transform>();
+        //RIMUOVI PRIMO ELEENTO
+        List<Transform> wallsList = new List<Transform>(walls);
+        wallsList.RemoveAt(0);
+
+        // Resetta proprietà di tutti i muri e target
+
+        foreach (Transform obj in wallsList)
+        {
+            //se l'oggetto ha il componente render
+            if (obj.gameObject.GetComponent<Renderer>() != null)
+            {
+                AssignWallProperties(obj.gameObject, false);
+            }
+        }
+   
+        // Seleziona un muro casuale e assegna come target
+        if (walls.Length > 0)
+        {
+            Transform randomWall = wallsList[Random.Range(0, wallsList.Count)];
+            AssignWallProperties(randomWall.gameObject, true);
+        }
+
     }
 
     // Funzione per inizializzare le celle del pavimento
@@ -154,16 +232,44 @@ public class CubeAgent2 : Agent
         return null;
     }
 
+    public enum VisitStatus
+    {
+        NotVisited = 0,
+        Visited = 1,
+        Invalid = 2
+    }
+
+    const int NUM_VISIT_STATES = 3;
+    private const float MAX_VISITS = 10f; // Or whatever upper bound makes sense
 
     public override void CollectObservations(VectorSensor sensor)
     {
 
         // Aggiungi posizione locale dell'agente
-        sensor.AddObservation(transform.localPosition);
-        sensor.AddObservation(transform.forward);
+        //sensor.AddObservation(transform.localPosition);
+        //sensor.AddObservation(transform.forward);
+
+        sensor.AddObservation(new Vector3(0,0,0));
 
 
-        //// Aggiungi osservazioni per la cella corrente SE CAMBIA
+        // per ogni osservazione sotto commentata, settala a 0
+
+        //sensor.AddOneHotObservation(0, 3);
+        //sensor.AddObservation(0);
+
+        //sensor.AddOneHotObservation(0, 3);
+        //sensor.AddObservation(0);
+
+        //sensor.AddOneHotObservation(0, 3);
+        //sensor.AddObservation(0);
+
+        //sensor.AddOneHotObservation(0, 3);
+        //sensor.AddObservation(0);
+
+        //sensor.AddOneHotObservation(0, 3);
+        //sensor.AddObservation(0);
+
+        // Aggiungi osservazioni per la cella corrente SE CAMBIA
         AddCellObservation(currentCell.transform, sensor);
 
         // Aggiungi osservazioni per le celle vicine (front, back, left, right)
@@ -176,16 +282,35 @@ public class CubeAgent2 : Agent
 
     private void AddCellObservation(Transform cell, VectorSensor sensor)
     {
+
+        VisitStatus status;
+        int visits = 0;
         if (cell == null)
         {
-            sensor.AddObservation(-1f); // fallback per numero visite
-            sensor.AddObservation(0f);  // cella non esplorata
-            return;
+            status = VisitStatus.Invalid;
+        }
+        else
+        {
+            visits = cellVisitCount.ContainsKey(cell) ? cellVisitCount[cell] : 0;
+            status = visits > 0 ? VisitStatus.Visited : VisitStatus.NotVisited;
         }
 
-        int visits = cellVisitCount != null && cellVisitCount.ContainsKey(cell) ? cellVisitCount[cell] : 0;
-        sensor.AddObservation(visits);
-        sensor.AddObservation(visits > 0 ? 1.0f : 0.0f);
+        sensor.AddOneHotObservation((int)status, NUM_VISIT_STATES);
+
+        float normalizedVisits = Mathf.Clamp01(visits / MAX_VISITS);
+        sensor.AddObservation(normalizedVisits);
+
+
+        //if (cell == null)
+        //{
+        //    sensor.AddObservation(-1f); // fallback per numero visite
+        //    sensor.AddObservation(0f);  // cella non esplorata
+        //    return;
+        //}
+
+        //int visits = cellVisitCount != null && cellVisitCount.ContainsKey(cell) ? cellVisitCount[cell] : 0;
+        //sensor.AddObservation(visits);
+        //sensor.AddObservation(visits > 0 ? 1.0f : 0.0f);
     }
 
 
@@ -193,25 +318,26 @@ public class CubeAgent2 : Agent
 
     private void AddNeighborObservations(Transform cell, Vector3 direction, VectorSensor sensor)
     {
-
+        VisitStatus status;
+        int visits = 0;
         if (cell != null && Physics.Raycast(cell.position, direction, out RaycastHit hit, 2f) && hit.collider.CompareTag("Floor"))
         {
             Transform neighborCell = hit.transform;
-
-            int visits = cellVisitCount.ContainsKey(neighborCell) ? cellVisitCount[neighborCell] : 0;
-            sensor.AddObservation(visits);
-
-            bool explored = visits > 0;
-            sensor.AddObservation(explored ? 1.0f : 0.0f);
+            visits = cellVisitCount.ContainsKey(neighborCell) ? cellVisitCount[neighborCell] : 0;
+            status = visits > 0 ? VisitStatus.Visited : VisitStatus.NotVisited;
         }
         else
         {
-            sensor.AddObservation(-1f);
-            sensor.AddObservation(0f);
-
+            status = VisitStatus.Invalid;
         }
 
+        // One-hot encode the status (NotVisited = 0, Visited = 1, Invalid = 2)
+        sensor.AddOneHotObservation((int)status, NUM_VISIT_STATES);
+
+        float normalizedVisits = Mathf.Clamp01(visits / MAX_VISITS);
+        sensor.AddObservation(normalizedVisits);
     }
+
 
     public override void OnActionReceived(ActionBuffers actions)
     {
@@ -255,61 +381,36 @@ public class CubeAgent2 : Agent
 
         // Incrementa il contatore dei passi
 
-        // penalizza per movimenti non dritti
-        if (nonStraightMoveCount > StepCount * 0.3f)
+        //penalizza per movimenti non dritti
+        if (nonStraightMoveCount > StepCount * 0.5f)
         {
-            AddReward(-0.01f);
+            AddReward(-0.005f);
         }
 
         // Penalizza l'agente per ogni passo
-        float penaltyMultiplier = Mathf.Clamp01(StepCount / 4000); // Ridurre la penalità dopo un certo numero di passi
-        AddReward(-0.001f * penaltyMultiplier);
-
+        AddReward(-0.001f);
 
         CheckExploredCell();
         //Debug.Log($"Step n. {StepCount} at time: {Time.time:F2}s");
 
+        //if (StepCount > 50 && Vector3.Distance(startPosition, transform.position) < 2.0f)
+        //{
+        //    AddReward(-0.1f);
+        //}
+
     }
 
 
-
-    private void AssignTargetWall()
-    {
-        if (targetR == null || targetL == null) return;
-
-        // Lista dei target disponibili
-        List<GameObject> targets = new List<GameObject> { targetR, targetL };
-        if (targetF != null)
-        {
-            targets.Add(targetF);
-        }
-
-        // Determina casualmente quale muro sarà il target
-        int targetIndex = Random.Range(0, targets.Count);
-
-        for (int i = 0; i < targets.Count; i++)
-        {
-            AssignWallProperties(targets[i], i == targetIndex);
-        }
-    }
-
-    private void AssignWallProperties(GameObject wall, bool isTarget)
-    {
-        wall.tag = isTarget ? "Target" : "Wall";
-        wall.GetComponent<Renderer>().material.color = isTarget ? Color.red : Color.yellow;
-        wall.GetComponent<Collider>().isTrigger = isTarget;
-    }
 
 
     void CheckExploredCell()
     {
-        //incremento di uno il contatore delle visite della cell
 
         // se non è stata ancora esplorata
         if (cellVisitCount[currentCell.transform] == 0)
         {
             // Premia l'esplorazione
-            AddReward(5f);
+            AddReward(0.5f);
 
             cellVisitCount[currentCell.transform]++;
 
@@ -318,13 +419,13 @@ public class CubeAgent2 : Agent
             if (renderer != null)
                 renderer.material.color = Color.cyan;
 
-            currentCell.transform.tag = "VisitedFloor";
+            //currentCell.transform.tag = "VisitedFloor";
 
         }
         // La cella è stata esplorata, ma la visitiamo di nuovo
         else if (lastVisitedCell != currentCell && lastVisitedCell != null)
         {
- 
+
             // Incrementa il contatore delle visite
             if (!cellVisitCount.TryGetValue(currentCell.transform, out int visits))
                 visits = 0;
@@ -340,25 +441,16 @@ public class CubeAgent2 : Agent
                 renderer.material.color = Color.Lerp(Color.cyan, Color.blue, intensity);
             }
 
+            if (visits >= 5)
+                AddReward(-0.001f * visits);
 
-            //// Penalità forte se si va in loop/stallo
-            if (visits >= 2 && visits < 5)
-                AddReward(-0.005f * visits);  // leggera penalità
-            else if (visits >= 5)
-                AddReward(-0.01f * visits);   // più severa
-            else if (visits >= 10)
-                EndEpisode();   // severa penalità
+
 
         }
         UpdateCellStatus();  // Aggiorna la cella corrente e la cella precedente
-     
+
 
     }
-
-    //private void Update()
-    //{
-    //    Debug.Log($"Reward: {GetCumulativeReward()}");
-    //}
 
     void OnDrawGizmos()
     {
@@ -371,7 +463,7 @@ public class CubeAgent2 : Agent
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
-    {       
+    {
         int vertical = Mathf.RoundToInt(Input.GetAxisRaw("Vertical"));
         int horizontal = Mathf.RoundToInt(Input.GetAxisRaw("Horizontal"));
         bool jump = Input.GetKey(KeyCode.Space);
@@ -385,7 +477,7 @@ public class CubeAgent2 : Agent
     {
         if (other.CompareTag("Target"))
         {
-            SetReward(1000f);
+            SetReward(30f);
             EndEpisode();
 
         }
@@ -395,12 +487,11 @@ public class CubeAgent2 : Agent
     {
         if (collision.gameObject.CompareTag("Wall"))
         {
-            SetReward(-1000f);
+            SetReward(-10f);
             EndEpisode();
-
-
         }
     }
+
     private bool IsGrounded()
     {
         bool r = Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1.1f);

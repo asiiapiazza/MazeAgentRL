@@ -35,7 +35,7 @@ behaviors:
           memory: null
           goal_conditioning_type: hyper
           deterministic: false
-    init_path: results\mazerun_1\CubeAgent2\checkpoint.pt
+    init_path: results\GetTarget_raggiocorto\CubeAgent2\checkpoint.pt
     keep_checkpoints: 5
     even_checkpoints: false
     max_steps: 1000000
@@ -66,8 +66,8 @@ engine_settings:
   no_graphics_monitor: false
 environment_parameters: null
 checkpoint_settings:
-  run_id: mazerun_2
-  initialize_from: mazerun_1
+  run_id: mazerun_1111
+  initialize_from: GetTarget_raggiocorto
   load_model: false
   resume: false
   force: true

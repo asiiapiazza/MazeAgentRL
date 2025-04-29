@@ -36,7 +36,6 @@ public class MazeGenerator : MonoBehaviour
     {
         GenerateGrid();
         StartCoroutine(GenerateMaze(Vector2Int.zero));
-        RandomFloorPosition();
 
     }
 
@@ -57,7 +56,7 @@ public class MazeGenerator : MonoBehaviour
             GameObject randomCell = cells[Random.Range(0, cells.Count)];
             // Restituisci le coordinate del centro della cella
             Vector3 cellPosition = randomCell.transform.position;
-            cellPosition.y = transform.position.y; // Mantieni l'altezza dell'agente
+            //cellPosition.y = transform.position.y; // Mantieni l'altezza dell'agente
             Quaternion rot = Quaternion.Euler(Vector3.up * Random.Range(0f, 360f));
             Instantiate(agentPrefab, cellPosition, rot, transform);
             CubeAgent2 scriptInstance = agentPrefab.GetComponent<CubeAgent2>();
@@ -77,26 +76,34 @@ public class MazeGenerator : MonoBehaviour
             {
                 Vector3 pos = new Vector3(x * cellSize, 0, z * cellSize);
                 GameObject cell = Instantiate(floorPrefab, pos, Quaternion.identity, floorParent.transform);
-                cells.Add(cell);
 
-                // Crea i muri: N, E, S, W
-                GameObject north = Instantiate(wallPrefab, pos + new Vector3(0, 1.5f, cellSize / 2), Quaternion.identity, wallParent.transform);
-                GameObject east = Instantiate(wallPrefab, pos + new Vector3(cellSize / 2, 1.5f, 0), Quaternion.Euler(0, 90, 0), wallParent.transform);
-                GameObject south = Instantiate(wallPrefab, pos + new Vector3(0, 1.5f, -cellSize / 2), Quaternion.identity, wallParent.transform);
-                GameObject west = Instantiate(wallPrefab, pos + new Vector3(-cellSize / 2, 1.5f, 0), Quaternion.Euler(0, 90, 0), wallParent.transform);
+                GameObject north = null, east = null, south = null, west = null;
+
+                // Solo se siamo sull'ultima riga, creiamo il muro nord
+                if (z == height - 1)
+                    north = Instantiate(wallPrefab, pos + new Vector3(0, 1.5f, cellSize / 2), Quaternion.identity, wallParent.transform);
+
+                // Solo se siamo sull'ultima colonna, creiamo il muro est
+                if (x == width - 1)
+                    east = Instantiate(wallPrefab, pos + new Vector3(cellSize / 2, 1.5f, 0), Quaternion.Euler(0, 90, 0), wallParent.transform);
+
+                // Sempre crea sud e ovest
+                south = Instantiate(wallPrefab, pos + new Vector3(0, 1.5f, -cellSize / 2), Quaternion.identity, wallParent.transform);
+                west = Instantiate(wallPrefab, pos + new Vector3(-cellSize / 2, 1.5f, 0), Quaternion.Euler(0, 90, 0), wallParent.transform);
+
                 cells.Add(cell);
 
                 wallsDict[new Vector2Int(x, z)] = new GameObject[] { north, east, south, west };
             }
         }
-        // Ora calcola il centro del labirinto
+
+        // Calcolo posizione per centrare il labirinto
         float mazeWidth = width * cellSize;
         float mazeHeight = height * cellSize;
         Vector3 centerOffset = new Vector3(-mazeWidth / 2f + cellSize / 2f, 0, -mazeHeight / 2f + cellSize / 2f);
-
-        // Sposta il MazeGenerator al centro del labirinto
         transform.position = centerOffset;
     }
+
 
     IEnumerator GenerateMaze(Vector2Int start)
     {
@@ -136,12 +143,16 @@ public class MazeGenerator : MonoBehaviour
 
         PlaceExit(last);
 
-        GameObject maze = this.gameObject; // oppure un altro GameObject root che rappresenta il labirinto
-        // rimuovi script di generazione dal prefab
-        Destroy(maze.GetComponent<MazeGenerator>());
+        //RandomFloorPosition();
 
+        // Salva il labirinto come prefab
+        GameObject maze = this.gameObject; // oppure un altro GameObject root che rappresenta il labirinto
         SaveMazeAsPrefab(maze, "Maze_" + System.DateTime.Now.ToString("yyyyMMdd_HHmmss"));
+
+        // Rimuovi script di generazione dal prefab
+        Destroy(maze.GetComponent<MazeGenerator>());
     }
+
 
     void PlaceExit(Vector2Int last)
     {

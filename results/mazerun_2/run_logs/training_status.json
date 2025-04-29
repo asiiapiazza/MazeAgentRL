@@ -2,58 +2,58 @@
     "CubeAgent2": {
         "checkpoints": [
             {
-                "steps": 59987,
-                "file_path": "results\\mazerun_2\\CubeAgent2\\CubeAgent2-59987.onnx",
-                "reward": 1063.3850402832031,
-                "creation_time": 1744404677.1984673,
+                "steps": 179965,
+                "file_path": "results\\mazerun_1111\\CubeAgent2\\CubeAgent2-179965.onnx",
+                "reward": 2.967500329017639,
+                "creation_time": 1744790233.7202275,
                 "auxillary_file_paths": [
-                    "results\\mazerun_2\\CubeAgent2\\CubeAgent2-59987.pt"
+                    "results\\mazerun_1111\\CubeAgent2\\CubeAgent2-179965.pt"
                 ]
             },
             {
-                "steps": 79993,
-                "file_path": "results\\mazerun_2\\CubeAgent2\\CubeAgent2-79993.onnx",
-                "reward": 1092.8282461015006,
-                "creation_time": 1744404734.550641,
+                "steps": 199993,
+                "file_path": "results\\mazerun_1111\\CubeAgent2\\CubeAgent2-199993.onnx",
+                "reward": 4.253389928300502,
+                "creation_time": 1744790284.342706,
                 "auxillary_file_paths": [
-                    "results\\mazerun_2\\CubeAgent2\\CubeAgent2-79993.pt"
+                    "results\\mazerun_1111\\CubeAgent2\\CubeAgent2-199993.pt"
                 ]
             },
             {
-                "steps": 99990,
-                "file_path": "results\\mazerun_2\\CubeAgent2\\CubeAgent2-99990.onnx",
-                "reward": 1086.0378016029915,
-                "creation_time": 1744404793.2869644,
+                "steps": 219985,
+                "file_path": "results\\mazerun_1111\\CubeAgent2\\CubeAgent2-219985.onnx",
+                "reward": 4.083000135421753,
+                "creation_time": 1744790335.0242987,
                 "auxillary_file_paths": [
-                    "results\\mazerun_2\\CubeAgent2\\CubeAgent2-99990.pt"
+                    "results\\mazerun_1111\\CubeAgent2\\CubeAgent2-219985.pt"
                 ]
             },
             {
-                "steps": 119999,
-                "file_path": "results\\mazerun_2\\CubeAgent2\\CubeAgent2-119999.onnx",
-                "reward": 1061.2772882634943,
-                "creation_time": 1744404851.7564282,
+                "steps": 239985,
+                "file_path": "results\\mazerun_1111\\CubeAgent2\\CubeAgent2-239985.onnx",
+                "reward": 4.2875001430511475,
+                "creation_time": 1744790386.2139752,
                 "auxillary_file_paths": [
-                    "results\\mazerun_2\\CubeAgent2\\CubeAgent2-119999.pt"
+                    "results\\mazerun_1111\\CubeAgent2\\CubeAgent2-239985.pt"
                 ]
             },
             {
-                "steps": 130105,
-                "file_path": "results\\mazerun_2\\CubeAgent2\\CubeAgent2-130105.onnx",
-                "reward": null,
-                "creation_time": 1744404881.2474453,
+                "steps": 259494,
+                "file_path": "results\\mazerun_1111\\CubeAgent2\\CubeAgent2-259494.onnx",
+                "reward": 4.133788007678407,
+                "creation_time": 1744790433.7984202,
                 "auxillary_file_paths": [
-                    "results\\mazerun_2\\CubeAgent2\\CubeAgent2-130105.pt"
+                    "results\\mazerun_1111\\CubeAgent2\\CubeAgent2-259494.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 130105,
-            "file_path": "results\\mazerun_2\\CubeAgent2.onnx",
-            "reward": null,
-            "creation_time": 1744404881.2474453,
+            "steps": 259494,
+            "file_path": "results\\mazerun_1111\\CubeAgent2.onnx",
+            "reward": 4.133788007678407,
+            "creation_time": 1744790433.7984202,
             "auxillary_file_paths": [
-                "results\\mazerun_2\\CubeAgent2\\CubeAgent2-130105.pt"
+                "results\\mazerun_1111\\CubeAgent2\\CubeAgent2-259494.pt"
             ]
         }
     },

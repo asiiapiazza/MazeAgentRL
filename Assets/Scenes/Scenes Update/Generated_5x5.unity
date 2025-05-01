@@ -289,10 +289,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 266586587375686776, guid: 3b0e31939ae035a4cbbba8f421688e51, type: 3}
+      propertyPath: m_RayLength
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1879625445652260300, guid: 3b0e31939ae035a4cbbba8f421688e51, type: 3}
       propertyPath: wall
       value: 
       objectReference: {fileID: 61983893}
+    - target: {fileID: 5741696710460761448, guid: 3b0e31939ae035a4cbbba8f421688e51, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 5022602860645237092, guid: fbf93e50bf230034d82865c72b35b6c9, type: 3}
     - target: {fileID: 6990639463632779613, guid: 3b0e31939ae035a4cbbba8f421688e51, type: 3}
       propertyPath: m_LocalPosition.x
       value: -20.3
@@ -543,7 +551,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4060654028300639598, guid: 22c83ca5244ecbc40b2a5c75454ad275, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -166.4
+      value: -168.4
       objectReference: {fileID: 0}
     - target: {fileID: 4060654028300639598, guid: 22c83ca5244ecbc40b2a5c75454ad275, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1021,7 +1029,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1906665148078977632, guid: 373fbe20946298046b0b89fadddf3b1d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 85.00001
+      value: 83.00001
       objectReference: {fileID: 0}
     - target: {fileID: 1906665148078977632, guid: 373fbe20946298046b0b89fadddf3b1d, type: 3}
       propertyPath: m_LocalRotation.w

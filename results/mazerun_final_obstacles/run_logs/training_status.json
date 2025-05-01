@@ -1,0 +1,65 @@
+{
+    "CubeAgent2": {
+        "checkpoints": [
+            {
+                "steps": 739971,
+                "file_path": "results\\mazerun_final_obstacles\\CubeAgent2\\CubeAgent2-739971.onnx",
+                "reward": 13.308110934716684,
+                "creation_time": 1746097357.2084317,
+                "auxillary_file_paths": [
+                    "results\\mazerun_final_obstacles\\CubeAgent2\\CubeAgent2-739971.pt"
+                ]
+            },
+            {
+                "steps": 759986,
+                "file_path": "results\\mazerun_final_obstacles\\CubeAgent2\\CubeAgent2-759986.onnx",
+                "reward": 13.95889981587728,
+                "creation_time": 1746097405.2815886,
+                "auxillary_file_paths": [
+                    "results\\mazerun_final_obstacles\\CubeAgent2\\CubeAgent2-759986.pt"
+                ]
+            },
+            {
+                "steps": 779989,
+                "file_path": "results\\mazerun_final_obstacles\\CubeAgent2\\CubeAgent2-779989.onnx",
+                "reward": 15.018249750137329,
+                "creation_time": 1746097454.0194438,
+                "auxillary_file_paths": [
+                    "results\\mazerun_final_obstacles\\CubeAgent2\\CubeAgent2-779989.pt"
+                ]
+            },
+            {
+                "steps": 799969,
+                "file_path": "results\\mazerun_final_obstacles\\CubeAgent2\\CubeAgent2-799969.onnx",
+                "reward": 14.30892078500045,
+                "creation_time": 1746097500.6118922,
+                "auxillary_file_paths": [
+                    "results\\mazerun_final_obstacles\\CubeAgent2\\CubeAgent2-799969.pt"
+                ]
+            },
+            {
+                "steps": 803052,
+                "file_path": "results\\mazerun_final_obstacles\\CubeAgent2\\CubeAgent2-803052.onnx",
+                "reward": null,
+                "creation_time": 1746097509.5110984,
+                "auxillary_file_paths": [
+                    "results\\mazerun_final_obstacles\\CubeAgent2\\CubeAgent2-803052.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 803052,
+            "file_path": "results\\mazerun_final_obstacles\\CubeAgent2.onnx",
+            "reward": null,
+            "creation_time": 1746097509.5110984,
+            "auxillary_file_paths": [
+                "results\\mazerun_final_obstacles\\CubeAgent2\\CubeAgent2-803052.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.6.0+cu126"
+    }
+}

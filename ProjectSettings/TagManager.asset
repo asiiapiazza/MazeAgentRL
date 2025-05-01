@@ -4,14 +4,13 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Price
   - Wall
   - Target
   - Maze
   - Agent
   - Floor
   - Reward
-  - VisitedFloor
+  - Obstacle
   layers:
   - Default
   - TransparentFX

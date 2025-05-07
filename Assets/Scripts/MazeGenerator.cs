@@ -59,9 +59,9 @@ public class MazeGenerator : MonoBehaviour
             //cellPosition.y = transform.position.y; // Mantieni l'altezza dell'agente
             Quaternion rot = Quaternion.Euler(Vector3.up * Random.Range(0f, 360f));
             Instantiate(agentPrefab, cellPosition, rot, transform);
+
             CubeAgent2 scriptInstance = agentPrefab.GetComponent<CubeAgent2>();
             // Assegna valori ai campi dello script
-            scriptInstance.targetL = targetInstance;
             scriptInstance.floor = floorParent;
     }
 

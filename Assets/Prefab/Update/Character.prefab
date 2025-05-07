@@ -299,7 +299,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 20
+    VectorObservationSize: 25
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 0
@@ -308,7 +308,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 3156e3b87a988e745b21e185f3d99f20, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: bc956eab9ddb4c64ea9c5fea0469ef50, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: CubeAgent2
@@ -334,12 +334,10 @@ MonoBehaviour:
   hasUpgradedFromAgentParameters: 1
   MaxStep: 4000
   moveSpeed: 6
+  numberOfObstacles: 7
   floor: {fileID: 0}
   wall: {fileID: 0}
-  targetL: {fileID: 0}
-  targetR: {fileID: 0}
-  targetF: {fileID: 0}
-  targetN: {fileID: 0}
+  obstaclePrefab: {fileID: 7580302845478160203, guid: 5158c943088ae4541a8fe8c217b0311e, type: 3}
 --- !u!54 &1634891578772146242
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -412,6 +410,7 @@ MonoBehaviour:
   m_SensorName: FloorSensor
   m_DetectableTags:
   - Floor
+  - Obstacle
   m_RaysPerDirection: 2
   m_MaxRayDegrees: 37
   m_SphereCastRadius: 0

@@ -4320,6 +4320,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1.0000005, z: 1.0000005}
   m_Center: {x: 0, y: -3.5527137e-14, z: -0.00000047683744}
+--- !u!1 &4754675851545198286
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4694485816825087394}
+  m_Layer: 0
+  m_Name: Obstacles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4694485816825087394
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4754675851545198286}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6990639463632779613}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4912642324036390059
 GameObject:
   m_ObjectHideFlags: 0
@@ -6575,6 +6606,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 4694485816825087394}
   - {fileID: 5243421359064438358}
   - {fileID: 3647681517915125585}
   - {fileID: 5562123220210746774}
@@ -6753,6 +6785,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6990639463632779613}
     m_Modifications:
+    - target: {fileID: 1720393551502075319, guid: 685d448c66e7fdd4b90aa6a2b6cd1287, type: 3}
+      propertyPath: wall
+      value: 
+      objectReference: {fileID: 5538764754503559749}
     - target: {fileID: 1720393551502075319, guid: 685d448c66e7fdd4b90aa6a2b6cd1287, type: 3}
       propertyPath: floor
       value: 

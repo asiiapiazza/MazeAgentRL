@@ -35,7 +35,7 @@ behaviors:
           memory: null
           goal_conditioning_type: hyper
           deterministic: false
-    init_path: results\mazerun_final5x5\CubeAgent2\checkpoint.pt
+    init_path: results\mazerun_final2\CubeAgent2\checkpoint.pt
     keep_checkpoints: 5
     even_checkpoints: false
     max_steps: 1000000
@@ -66,8 +66,8 @@ engine_settings:
   no_graphics_monitor: false
 environment_parameters: null
 checkpoint_settings:
-  run_id: mazerun_final_jump2
-  initialize_from: mazerun_final5x5
+  run_id: mazerun_final_jump
+  initialize_from: mazerun_final2
   load_model: false
   resume: false
   force: true

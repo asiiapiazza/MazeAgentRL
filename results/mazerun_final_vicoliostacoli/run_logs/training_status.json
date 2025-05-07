@@ -1,0 +1,65 @@
+{
+    "CubeAgent2": {
+        "checkpoints": [
+            {
+                "steps": 759997,
+                "file_path": "results\\mazerun_final_vicoliostacoli\\CubeAgent2\\CubeAgent2-759997.onnx",
+                "reward": 9.61399974822998,
+                "creation_time": 1746550937.6016183,
+                "auxillary_file_paths": [
+                    "results\\mazerun_final_vicoliostacoli\\CubeAgent2\\CubeAgent2-759997.pt"
+                ]
+            },
+            {
+                "steps": 779998,
+                "file_path": "results\\mazerun_final_vicoliostacoli\\CubeAgent2\\CubeAgent2-779998.onnx",
+                "reward": 9.547970214692674,
+                "creation_time": 1746550990.5918546,
+                "auxillary_file_paths": [
+                    "results\\mazerun_final_vicoliostacoli\\CubeAgent2\\CubeAgent2-779998.pt"
+                ]
+            },
+            {
+                "steps": 799993,
+                "file_path": "results\\mazerun_final_vicoliostacoli\\CubeAgent2\\CubeAgent2-799993.onnx",
+                "reward": 9.724574332541607,
+                "creation_time": 1746551044.707154,
+                "auxillary_file_paths": [
+                    "results\\mazerun_final_vicoliostacoli\\CubeAgent2\\CubeAgent2-799993.pt"
+                ]
+            },
+            {
+                "steps": 819980,
+                "file_path": "results\\mazerun_final_vicoliostacoli\\CubeAgent2\\CubeAgent2-819980.onnx",
+                "reward": 9.43706283702717,
+                "creation_time": 1746551094.4536626,
+                "auxillary_file_paths": [
+                    "results\\mazerun_final_vicoliostacoli\\CubeAgent2\\CubeAgent2-819980.pt"
+                ]
+            },
+            {
+                "steps": 836615,
+                "file_path": "results\\mazerun_final_vicoliostacoli\\CubeAgent2\\CubeAgent2-836615.onnx",
+                "reward": null,
+                "creation_time": 1746551134.1630936,
+                "auxillary_file_paths": [
+                    "results\\mazerun_final_vicoliostacoli\\CubeAgent2\\CubeAgent2-836615.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 836615,
+            "file_path": "results\\mazerun_final_vicoliostacoli\\CubeAgent2.onnx",
+            "reward": null,
+            "creation_time": 1746551134.1630936,
+            "auxillary_file_paths": [
+                "results\\mazerun_final_vicoliostacoli\\CubeAgent2\\CubeAgent2-836615.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.6.0+cu126"
+    }
+}

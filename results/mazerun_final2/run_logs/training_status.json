@@ -1,0 +1,65 @@
+{
+    "CubeAgent2": {
+        "checkpoints": [
+            {
+                "steps": 179997,
+                "file_path": "results\\mazerun_final2\\CubeAgent2\\CubeAgent2-179997.onnx",
+                "reward": 9.62312749091615,
+                "creation_time": 1746699342.879487,
+                "auxillary_file_paths": [
+                    "results\\mazerun_final2\\CubeAgent2\\CubeAgent2-179997.pt"
+                ]
+            },
+            {
+                "steps": 199997,
+                "file_path": "results\\mazerun_final2\\CubeAgent2\\CubeAgent2-199997.onnx",
+                "reward": 9.707294015323415,
+                "creation_time": 1746699387.6382847,
+                "auxillary_file_paths": [
+                    "results\\mazerun_final2\\CubeAgent2\\CubeAgent2-199997.pt"
+                ]
+            },
+            {
+                "steps": 219999,
+                "file_path": "results\\mazerun_final2\\CubeAgent2\\CubeAgent2-219999.onnx",
+                "reward": 9.060647628524087,
+                "creation_time": 1746699431.549448,
+                "auxillary_file_paths": [
+                    "results\\mazerun_final2\\CubeAgent2\\CubeAgent2-219999.pt"
+                ]
+            },
+            {
+                "steps": 239993,
+                "file_path": "results\\mazerun_final2\\CubeAgent2\\CubeAgent2-239993.onnx",
+                "reward": 9.745309443700881,
+                "creation_time": 1746699475.8051362,
+                "auxillary_file_paths": [
+                    "results\\mazerun_final2\\CubeAgent2\\CubeAgent2-239993.pt"
+                ]
+            },
+            {
+                "steps": 256438,
+                "file_path": "results\\mazerun_final2\\CubeAgent2\\CubeAgent2-256438.onnx",
+                "reward": 9.64578357902733,
+                "creation_time": 1746699511.840821,
+                "auxillary_file_paths": [
+                    "results\\mazerun_final2\\CubeAgent2\\CubeAgent2-256438.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 256438,
+            "file_path": "results\\mazerun_final2\\CubeAgent2.onnx",
+            "reward": 9.64578357902733,
+            "creation_time": 1746699511.840821,
+            "auxillary_file_paths": [
+                "results\\mazerun_final2\\CubeAgent2\\CubeAgent2-256438.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.6.0+cu126"
+    }
+}

@@ -27,7 +27,7 @@ public class CubeAgent2 : Agent
 
 
     private GameObject lastVisitedCell = null; // Memorizza l'ultima cella visitata
-    private GameObject currentCell = null; // Memorizza la cella corrente;
+    private GameObject currentCell = null; // Memorizza la cella corrente  
     private Dictionary<Transform, int> cellVisitCount = new Dictionary<Transform, int>(); // Contatore delle visite per cella
 
 
@@ -50,11 +50,10 @@ public class CubeAgent2 : Agent
         InitiateFloor();
 
         //rimuovi una cella del pavimento per creare il buco
-        PlaceObsticles(numberOfObstacles);
+        //PlaceObsticles(numberOfObstacles);
 
         // spawna agente casualmente
         this.transform.position = RandomFloorPosition();
-        currentCell = GetCurrentCell();
 
         this.rb.linearVelocity = Vector3.zero;
         this.rb.angularVelocity = Vector3.zero;
@@ -120,11 +119,13 @@ public class CubeAgent2 : Agent
             cells.Remove(randomCell);
             cellVisitCount.Remove(randomCell);
 
-            int random = Random.Range(0, 2);
-            if (random == 1)
-            {
-                GameObject obstacleInstance = Instantiate(obstaclePrefab, pos, Quaternion.identity, obstacles.transform);
-            }
+            GameObject obstacleInstance = Instantiate(obstaclePrefab, pos, Quaternion.identity, obstacles.transform);
+
+            //int random = Random.Range(0, 2);
+            //if (random == 1)
+            //{
+            //    GameObject obstacleInstance = Instantiate(obstaclePrefab, pos, Quaternion.identity, obstacles.transform);
+            //}
         }
 
     }
@@ -149,6 +150,8 @@ public class CubeAgent2 : Agent
     #region CellMethods
     private void InitiateFloor()
     {
+        currentCell = null;
+        lastVisitedCell = null;
         cells.Clear();
         cellVisitCount.Clear();
 
@@ -166,31 +169,6 @@ public class CubeAgent2 : Agent
     }
 
 
-    // Funzione per determinare la cella corrente
-    private GameObject GetCurrentCell()
-    {
-        // Esegui un raycast per determinare cosa c'è sotto agente 
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, 1f)) // Assumendo che le celle siano sotto l'agente
-        {
-            return hit.collider.gameObject;  // Restituisce la cella in cui l'agente è attualmente
-        }
-
-        return null;
-    }
-
-
-    // Funzione per aggiornare la cella corrente e la cella precedente
-    private void UpdateCellStatus()
-    {
-        GameObject currentCheckedCell = GetCurrentCell();
-        if (currentCheckedCell != null)
-        {
-            lastVisitedCell = currentCell;
-            currentCell = currentCheckedCell;
-        }
-
-    }
     #endregion
 
     #region "Randomiziation Position"
@@ -257,11 +235,12 @@ public class CubeAgent2 : Agent
     {
         NotVisited = 0,
         Visited = 1,
-        Invalid = 2,
-        Obstacle = 3
+        Wall = 2,
+        Obstacle = 3,
+        Hole=4
     }
 
-    const int NUM_VISIT_STATES = 4;
+    const int NUM_VISIT_STATES = 5;
     private const float MAX_VISITS = 10f; // Or whatever upper bound makes sense
 
     public override void CollectObservations(VectorSensor sensor)
@@ -285,7 +264,7 @@ public class CubeAgent2 : Agent
         float normalizedVisits = -0.1f;
         if (cc == null)
         {
-            status = VisitStatus.Invalid;
+            status = VisitStatus.Hole;
         }
         else
         {
@@ -309,47 +288,89 @@ public class CubeAgent2 : Agent
 
     }
 
+
     private void AddNeighborObservations(GameObject cc, Vector3 direction, VectorSensor sensor)
     {
         Transform cell = cc != null ? cc.transform : null;
-        VisitStatus status = VisitStatus.Invalid;
-
+        VisitStatus status = VisitStatus.Hole;
         float normalizedVisits = -0.1f;
 
-
-        if (cell != null && Physics.Raycast(cell.position, direction, out RaycastHit hit, 2f) && hit.collider.gameObject.CompareTag("Floor"))
+        void EvaluateHit(RaycastHit hit)
         {
-            Transform neighborCell = hit.transform;
-            int visits = cellVisitCount.ContainsKey(neighborCell) ? cellVisitCount[neighborCell] : 0;
-            status = visits > 0 ? VisitStatus.Visited : VisitStatus.NotVisited;
-            normalizedVisits = Mathf.Clamp01(visits / MAX_VISITS);
-        }
-        //se ho un buco, devo sparare un raggio a partire dal vuoto
-        else if(cell == null)
-        {
-            var pos = this.transform.position;
-            pos.y = 0;
- 
-            //spara un raggio dal vuoto
-            if(Physics.Raycast(pos, direction, out RaycastHit hit2, 5f) && hit2.collider.gameObject.CompareTag("Floor"))
-            {
-                Transform neighborCell = hit2.transform;
+                Transform neighborCell = hit.transform;
                 int visits = cellVisitCount.ContainsKey(neighborCell) ? cellVisitCount[neighborCell] : 0;
                 status = visits > 0 ? VisitStatus.Visited : VisitStatus.NotVisited;
-                normalizedVisits = Mathf.Clamp01(visits / MAX_VISITS);
-            }
-        }
-        else
-        {
-            status = VisitStatus.Invalid;
+                normalizedVisits = Mathf.Clamp01((float)visits / MAX_VISITS); 
         }
 
+        // 1. Caso: cella valida e raggio colpisce un pavimento
+        if (cell != null)
+        {
+            _ = Physics.Raycast(cell.position, direction, out RaycastHit hit, 2f);
+            if (hit.collider != null)
+            {
+
+                if (hit.collider.gameObject.CompareTag("Floor"))
+                {
+                    EvaluateHit(hit);
+                }
+                else if (hit.collider.gameObject.CompareTag("Obstacle"))
+                {
+                    status = VisitStatus.Obstacle;
+                }
+                else if (hit.collider.gameObject.CompareTag("Wall"))
+                {
+                    status = VisitStatus.Wall;
+
+                }
+
+            }
+            else 
+            {
+              status = VisitStatus.Hole;
+            }
+            
+        }
+        // 2. Caso: nessuna cella disponibile, raggio parte dalla posizione dell'agente
+        else
+        {
+            Vector3 pos = transform.position;
+            pos.y = 0;
+            _ = Physics.Raycast(pos, direction, out RaycastHit hit, 2f);
+
+            if (hit.collider != null)
+            {
+
+                if (hit.collider.gameObject.CompareTag("Floor"))
+                {
+                    EvaluateHit(hit);
+                }
+                else if (hit.collider.gameObject.CompareTag("Obstacle"))
+                {
+                    status = VisitStatus.Obstacle;
+                }
+                else if (hit.collider.gameObject.CompareTag("Wall"))
+                {
+                    status = VisitStatus.Wall;
+
+                }
+            }
+            else
+            {
+                status = VisitStatus.Hole;
+            }
+
+        }
+
+        // Aggiunta delle osservazioni
         sensor.AddOneHotObservation((int)status, NUM_VISIT_STATES);
         sensor.AddObservation(normalizedVisits);
     }
     #endregion
 
 
+    private GameObject cellBeforeJump;
+    private bool jumpedOverObstacle = false;
     private void ObsticlesRewardSystem()
     {
         if (transform.position.y < 0)
@@ -359,15 +380,29 @@ public class CubeAgent2 : Agent
         }
 
         // Controllo se ho qualcosa sotto con raycast
-        (bool r, RaycastHit hits) = GetDownRayCast(5f);
+        //(bool r, RaycastHit hits) = GetDownRayCast(5f);
+
+        if (isGrounded && currentCell != null)
+        {
+            cellBeforeJump = currentCell;
+
+            // Lancia un raycast in avanti per vedere se c'è un ostacolo davanti
+            _ = Physics.Raycast(cellBeforeJump.transform.position, this.transform.forward, out RaycastHit hit, 3f);
+
+                if (hit.collider == null || hit.collider.CompareTag("Obstacle"))
+                    jumpedOverObstacle = true;  // Possibile salto sopra ostacolo
+                else
+                    // Nessun hit = buco
+                    jumpedOverObstacle = false;            
+                
+        }
 
         //deve stare in aria e sotto non deve esserci niente, oppure un ostacolo
-        if (!isGrounded && (!r || (hits.collider.CompareTag("Obstacle"))) && currentCell != lastVisitedCell)
-        {
-            AddReward(0.1f);
-        }
+        //if (!isGrounded && (!r || (hits.collider.CompareTag("Obstacle"))))
+        //{
+        //    AddReward(0.1f);
+        //}
     }
-
 
 
     public override void OnActionReceived(ActionBuffers actions)
@@ -404,23 +439,22 @@ public class CubeAgent2 : Agent
                 break;
         }
 
-        if (jump == 1 && isGrounded)
-        {
-            isGrounded = false;
-            AddReward(-0.05f);
-            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 5f, 0f);
-        }
+        //if (jump == 1 && isGrounded)
+        //{
+        //    isGrounded = false;
+        //    AddReward(-0.05f);
+        //    rb.linearVelocity = new Vector3(rb.linearVelocity.x, 5f, 0f);
+        //}
 
         //penalizza per movimenti non dritti
         if (nonStraightMoveCount > StepCount * 0.5f)
             AddReward(-0.005f);
 
         UpdateCellStatus();
+        if (currentCell != lastVisitedCell && currentCell.tag == "Floor")
+            CheckExploredCell();        
 
-        if (currentCell != null && currentCell.tag == "Floor")
-            CheckExploredCell();
-
-        ObsticlesRewardSystem();
+        //ObsticlesRewardSystem();
 
         // Penalizza l'agente per ogni passo
         AddReward(-0.001f);
@@ -446,6 +480,7 @@ public class CubeAgent2 : Agent
 
         }
         // La cella è stata esplorata, ma la visitiamo di nuovo
+        //queste due celle saranno sempre diverse, deve valere una sola volta
         else if (lastVisitedCell != currentCell && lastVisitedCell != null && isGrounded)
         {
 
@@ -464,10 +499,10 @@ public class CubeAgent2 : Agent
                 renderer.material.color = Color.Lerp(Color.cyan, Color.blue, intensity);
             }
 
-            if (visits >= 3)
+            if (visits > 2)
                 AddReward(-0.001f * visits);
-
         }
+
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -478,7 +513,7 @@ public class CubeAgent2 : Agent
         ActionSegment<int> actions = actionsOut.DiscreteActions;
         actions[0] = vertical >= 0 ? vertical : 2;
         actions[1] = horizontal >= 0 ? horizontal : 2;
-        actions[2] = jump ? 1 : 0;
+        //actions[2] = jump ? 1 : 0;
     }
 
 
@@ -526,12 +561,46 @@ public class CubeAgent2 : Agent
             SetReward(-10f);
             EndEpisode();
         }
-        else if(collision.gameObject.CompareTag("Floor"))
+        else if (collision.gameObject.CompareTag("Floor"))
         {
             isGrounded = true;
+            GameObject landedCell = collision.collider.gameObject;
+
+            // Se ha saltato e atterrato in un'altra cella
+            if (jumpedOverObstacle && cellBeforeJump != null && landedCell != cellBeforeJump)
+                AddReward(0.1f);  // Premio perché ha davvero superato un ostacolo
+            
+
+
+            // Reset
+            jumpedOverObstacle = false;
+
         }
     }
 
+
+    private GameObject GetCurrentCell()
+    {
+        // Esegui un raycast per determinare in quale cella si trova l'agente
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, 1f)) // Assumendo che le celle siano sotto l'agente
+        {
+            return hit.collider.gameObject;  // Restituisce la cella in cui l'agente è attualmente
+        }
+        return null;
+    }
+
+
+    // Funzione per aggiornare la cella corrente e la cella precedente
+    private void UpdateCellStatus()
+    {
+        GameObject currentCheckedCell = GetCurrentCell();
+        if (currentCheckedCell != null)
+        {
+            lastVisitedCell = currentCell;
+            currentCell = currentCheckedCell;
+        }
+    }
 
     #endregion
 

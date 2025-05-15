@@ -67,7 +67,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 30
-  field of view: 39.9
+  field of view: 78
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -308,7 +308,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: ee45d6d1181b4c44497dd90656200790, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: 534dea381f42c5146bcb5effb84ba94b, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: CubeAgent2
@@ -334,9 +334,9 @@ MonoBehaviour:
   hasUpgradedFromAgentParameters: 1
   MaxStep: 4000
   moveSpeed: 6
-  canAgentJump: 0
+  canAgentJump: 1
   timeScale: 20
-  numberOfObstacles: 1
+  numberOfObstacles: 7
   floor: {fileID: 0}
   wall: {fileID: 0}
   obstaclePrefab: {fileID: 7580302845478160203, guid: 5158c943088ae4541a8fe8c217b0311e, type: 3}
@@ -412,7 +412,6 @@ MonoBehaviour:
   m_SensorName: FloorSensor
   m_DetectableTags:
   - Floor
-  - Obstacle
   m_RaysPerDirection: 2
   m_MaxRayDegrees: 37
   m_SphereCastRadius: 0

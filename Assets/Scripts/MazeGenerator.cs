@@ -37,7 +37,6 @@ public class MazeGenerator : MonoBehaviour
         GenerateGrid();
         StartCoroutine(GenerateMaze(Vector2Int.zero));
 
-
     }
 
     public void SaveMazeAsPrefab(GameObject mazeRoot, string prefabName)
@@ -52,24 +51,18 @@ public class MazeGenerator : MonoBehaviour
 
     // Funzione per assegnare una posizione casuale sul pavimento (e assegnare visita = 1 alla prima cella)
     private void RandomFloorPosition()
-    {     
-            // Scegli una cella casuale
-            GameObject randomCell = cells[Random.Range(0, cells.Count)];
+    {
+        // Scegli una cella casuale
+        GameObject randomCell = cells[Random.Range(0, cells.Count)];
+        // Restituisci le coordinate del centro della cella
+        Vector3 cellPosition = randomCell.transform.position;
+        //cellPosition.y = transform.position.y; // Mantieni l'altezza dell'agente
+        Quaternion rot = Quaternion.Euler(Vector3.up * Random.Range(0f, 360f));
+        Instantiate(agentPrefab, cellPosition, rot, transform);
 
-            // Restituisci le coordinate del centro della cella
-            Vector3 cellPosition = randomCell.transform.position;
-
-            //cellPosition.y = transform.position.y; // Mantieni l'altezza dell'agente
-            Quaternion rot = Quaternion.Euler(Vector3.up * Random.Range(0f, 360f));
-            Instantiate(agentPrefab, cellPosition, rot, transform);
-
-            CubeAgent2 scriptInstance = agentPrefab.GetComponent<CubeAgent2>();
-
-            // Assegna valori ai campi dello script
-            scriptInstance.floor = floorParent;
-            scriptInstance.wall = wallParent;
-
-
+        CubeAgent2 scriptInstance = agentPrefab.GetComponent<CubeAgent2>();
+        // Assegna valori ai campi dello script
+        scriptInstance.floor = floorParent;
     }
 
 
@@ -148,18 +141,16 @@ public class MazeGenerator : MonoBehaviour
             }
         }
 
-        //PlaceExit(last);
+        PlaceExit(last);
 
         //RandomFloorPosition();
 
         // Salva il labirinto come prefab
         GameObject maze = this.gameObject; // oppure un altro GameObject root che rappresenta il labirinto
-                                           // Rimuovi script di generazione dal prefab
-        Destroy(maze.GetComponent<MazeGenerator>());
-
         SaveMazeAsPrefab(maze, "Maze_" + System.DateTime.Now.ToString("yyyyMMdd_HHmmss"));
 
-      
+        // Rimuovi script di generazione dal prefab
+        Destroy(maze.GetComponent<MazeGenerator>());
     }
 
 

@@ -24,7 +24,9 @@ public class CubeAgent2 : Agent
     private Transform[] floorCells;
     private List<Transform> cells = new List<Transform>();
 
-    [SerializeField] private GameObject obstaclePrefab;
+    [SerializeField] private GameObject woodObstacle;
+    [SerializeField] private GameObject puddleObstacle;
+
 
 
 
@@ -145,7 +147,6 @@ public class CubeAgent2 : Agent
   
             var pos = randomCell.position;
 
-
             //rimuovi cella dalla logica
             randomCell.gameObject.SetActive(false);
             cells.Remove(randomCell);
@@ -154,9 +155,20 @@ public class CubeAgent2 : Agent
             //GameObject obstacleInstance = Instantiate(obstaclePrefab, pos, Quaternion.identity, obstacles.transform);
 
             int random = Random.Range(0, 2);
+
+            //dammi una rotazione casuale (0, 90, 180, 270)
+            float randomRotation = Random.Range(0f, 4f) * 90f;
+            Quaternion rotation = Quaternion.identity;
+            rotation.y = randomRotation;
+
             if (random == 1)
             {
-                GameObject obstacleInstance = Instantiate(obstaclePrefab, pos, Quaternion.identity, obstacles.transform);
+                GameObject obstacleInstance = Instantiate(woodObstacle, pos, rotation, obstacles.transform);
+            }
+            else
+            {
+                GameObject obstacleInstance = Instantiate(puddleObstacle, pos, rotation, obstacles.transform);
+
             }
         }
 
@@ -635,6 +647,11 @@ public class CubeAgent2 : Agent
 
             // Reset
             jumpedOverObstacle = false;
+        }
+        else if(collision.gameObject.CompareTag("Target"))
+        {
+            SetReward(10f);
+            EndEpisode();
         }
     }
 

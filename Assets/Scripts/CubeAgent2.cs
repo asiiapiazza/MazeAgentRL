@@ -26,7 +26,8 @@ public class CubeAgent2 : Agent
 
     [SerializeField] private GameObject woodObstacle;
     [SerializeField] private GameObject puddleObstacle;
-
+    public Animator animator;
+    public float movementThreshold = 0.01f; // per evitare micro-movimenti
 
 
 
@@ -530,6 +531,24 @@ public class CubeAgent2 : Agent
         {
             Restart();
         }
+
+        // Calcola quanto si è spostato
+        //float distanceMoved = (transform.position - startPosition).magnitude;
+
+        //// Considera camminata solo se il movimento è maggiore di una soglia
+        //bool isWalking = distanceMoved > movementThreshold;
+
+        //// Aggiorna il parametro nell'Animator
+        //animator.SetBool("isWalking", isWalking);
+
+        //// Aggiorna la posizione per il prossimo frame
+        //startPosition = transform.position;
+
+        // Controllo se ci sono input WASD o frecce
+        bool isMoving = Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0;
+
+        // Imposta il parametro nell'animator
+        animator.SetBool("isWalking", isMoving);
     }
 
     void Restart()
@@ -667,4 +686,8 @@ public class CubeAgent2 : Agent
         return r;
     }
     #endregion
+
+
+   
 }
+

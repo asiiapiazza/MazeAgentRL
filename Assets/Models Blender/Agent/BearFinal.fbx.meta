@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 83c201895defcc64c8180720a851f20a
+guid: 8d770277d5d75fb4e8ebfc4c46d333f6
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -29,11 +29,6 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Nose
     second: {fileID: 2100000, guid: 21dcca822039d70439274188988a1cef, type: 2}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: orso corpo
-    second: {fileID: 2800000, guid: ca3d681b978181a4b8c5d5c840658ad7, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -73,35 +68,6 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Bear|Jumping
-      takeName: Bear|Jumping
-      internalID: 3474014312076751881
-      firstFrame: 0
-      lastFrame: 15
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0

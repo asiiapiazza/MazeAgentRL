@@ -12,6 +12,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Plane
+    second: {fileID: 2100000, guid: 4d2b3c4f6dba2334d8706f9bd5b6129c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: WL_Frog.002
     second: {fileID: 2100000, guid: c41f2cb8cce77b0498dfa06ab9eeef16, type: 2}
   - first:

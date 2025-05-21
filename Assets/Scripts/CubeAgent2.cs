@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
@@ -19,6 +20,8 @@ public class CubeAgent2 : Agent
     private Vector3 startPosition;
     public GameObject floor;
     public GameObject wall; // Prefab del muro da generare
+    public GameObject flowers; // Prefab del muro da generare
+
     private bool isGrounded = false; // Variabile per controllare se l'agente è a terra
     private int nonStraightMoveCount = 0; // Contatore dei movimenti non dritti
     private Transform[] floorCells;
@@ -26,10 +29,11 @@ public class CubeAgent2 : Agent
 
     [SerializeField] private GameObject woodObstacle;
     [SerializeField] private GameObject puddleObstacle;
+    [SerializeField] private GameObject flowerPrefab;
+
+
+
     public Animator animator;
-    public float movementThreshold = 0.01f; // per evitare micro-movimenti
-
-
 
     private GameObject lastVisitedCell = null; // Memorizza l'ultima cella visitata
     private GameObject currentCell = null; // Memorizza la cella corrente  
@@ -39,6 +43,7 @@ public class CubeAgent2 : Agent
 
     public override void Initialize()
     {
+        //minimapCamera.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         Time.timeScale = timeScale;
         rb = GetComponent<Rigidbody>();
         startPosition = transform.localPosition;
@@ -54,6 +59,7 @@ public class CubeAgent2 : Agent
 
         // Resetta lo stato delle celle esplorate
         InitiateFloor();
+
 
         //rimuovi una cella del pavimento per creare il buco
         if (canAgentJump && numberOfObstacles > 0)
@@ -158,12 +164,15 @@ public class CubeAgent2 : Agent
             int random = Random.Range(0, 2);
 
             //dammi una rotazione casuale (0, 90, 180, 270)
-            float randomRotation = Random.Range(0f, 4f) * 90f;
+            //ma deve essere intera
+
+            int randomRotation = Random.Range(0, 4) * 90;
             Quaternion rotation = Quaternion.identity;
             rotation.y = randomRotation;
 
             if (random == 1)
             {
+                pos.y += -0.078f;
                 GameObject obstacleInstance = Instantiate(woodObstacle, pos, rotation, obstacles.transform);
             }
             else
@@ -211,6 +220,8 @@ public class CubeAgent2 : Agent
                 //cell.GetComponent<Renderer>().material.color = Color.white; // Resetta il colore delle celle
             }
         }
+
+        DestroyAll(flowers); // Distruggi i fiori esistenti
     }
 
 
@@ -515,7 +526,7 @@ public class CubeAgent2 : Agent
 
         UpdateCellStatus();
 
-        if (currentCell.tag == "Floor")
+        if (currentCell != null && currentCell.tag == "Floor")
             CheckExploredCell();
 
         ObsticlesRewardSystem();
@@ -532,28 +543,35 @@ public class CubeAgent2 : Agent
             Restart();
         }
 
-        // Calcola quanto si è spostato
-        //float distanceMoved = (transform.position - startPosition).magnitude;
+        //Calcola quanto si è spostato
+        float distanceMoved = (transform.position - startPosition).magnitude;
 
-        //// Considera camminata solo se il movimento è maggiore di una soglia
-        //bool isWalking = distanceMoved > movementThreshold;
+        // Considera camminata solo se il movimento è maggiore di una soglia
+        bool isWalking = distanceMoved > 0.01f;
 
-        //// Aggiorna il parametro nell'Animator
-        //animator.SetBool("isWalking", isWalking);
+        // Aggiorna il parametro nell'Animator
+        animator.SetBool("isWalking", isWalking);
 
-        //// Aggiorna la posizione per il prossimo frame
-        //startPosition = transform.position;
+        // Aggiorna la posizione per il prossimo frame
+        startPosition = transform.position;
 
         // Controllo se ci sono input WASD o frecce
-        bool isMoving = Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0;
+        //bool isMoving = Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0;
 
-        // Imposta il parametro nell'animator
-        animator.SetBool("isWalking", isMoving);
+        //// Imposta il parametro nell'animator
+        //animator.SetBool("isWalking", isMoving);
     }
 
     void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    IEnumerator SpawnFlowerWithDelay(Vector3 flowerPosition)
+    {
+        // Istanzia fiore nell'oggetto parent "flowers" con un delay di mezzo secondo
+        yield return new WaitForSeconds(0.1f);
+        GameObject flowerInstance = Instantiate(flowerPrefab, flowerPosition, Quaternion.identity, flowers.transform);
     }
 
     void CheckExploredCell()
@@ -566,8 +584,16 @@ public class CubeAgent2 : Agent
 
             cellVisitCount[currentCell.transform]++;
 
+            Vector3 flowerPosition = currentCell.transform.position;
+            flowerPosition.y += 0.1f; // Alza il fiore sopra la cella
+
+            // Istanzia fiore nell'obejct parent Flower con un delay di mezzo secondo
+            StartCoroutine(SpawnFlowerWithDelay(flowerPosition));
+
+
+
             // Cambia il colore della cella per indicare che è stata esplorata
-            var renderer = currentCell.transform.GetComponent<Renderer>();
+            //var renderer = currentCell.transform.GetComponent<Renderer>();
             //if (renderer != null)
             //    renderer.material.color = Color.cyan;
 

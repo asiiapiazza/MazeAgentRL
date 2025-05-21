@@ -1,34 +1,9 @@
 fileFormatVersion: 2
-guid: cf0c23d78da52094caa49b7d1fe432d6
+guid: db29d5ef6a2ac74459488c41f3418264
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Body.001
-    second: {fileID: 2100000, guid: bf7d8c231e4825a40bf617bbd9a273db, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Body.002
-    second: {fileID: 2100000, guid: cefdf3423f9590f479ffa58c115e916e, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Ears
-    second: {fileID: 2100000, guid: 2ffe8433c7381a2459b648316bfb8eb9, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Eyes
-    second: {fileID: 2100000, guid: f403593fd4a977c42a67798c420f7659, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Nose
-    second: {fileID: 2100000, guid: 21dcca822039d70439274188988a1cef, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0

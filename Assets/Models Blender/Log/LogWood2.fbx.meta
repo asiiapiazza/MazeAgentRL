@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b0d1bb9a3f2a70c4992edb68897e73d7
+guid: ffb07aca7e1a6934aac24118ec757d2e
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,17 +7,12 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Grassblock.001
+      name: Grassblock
     second: {fileID: 2100000, guid: 4d2b3c4f6dba2334d8706f9bd5b6129c, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Material.006
-    second: {fileID: 2100000, guid: 109309bfe2696004ab4f3a9219ee7c1f, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material.007
+      name: Material.008
     second: {fileID: 2100000, guid: e2da803c804d5e9478efa01f9cfa92bd, type: 2}
   materials:
     materialImportMode: 2

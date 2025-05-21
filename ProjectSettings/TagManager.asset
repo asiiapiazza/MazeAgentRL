@@ -9,7 +9,6 @@ TagManager:
   - Maze
   - Agent
   - Floor
-  - Reward
   - Obstacle
   layers:
   - Default

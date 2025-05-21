@@ -17,13 +17,23 @@ public class MazeGenerator : MonoBehaviour
     public GameObject targetPrefab;
     public GameObject agentPrefab;
 
-    public GameObject floorParent;
-    public GameObject wallParent;
+
     List<GameObject> cells = new List<GameObject>();
 
     private bool[,] visited;
     private Dictionary<Vector2Int, GameObject[]> wallsDict = new Dictionary<Vector2Int, GameObject[]>();
     private GameObject targetInstance;
+
+    // Crea oggetto genitore per pavimenti, muri, ostacoli, fiori
+    GameObject mazeParent;
+    GameObject floorParent;
+    GameObject wallParent;
+    GameObject flowerParent;
+    GameObject obstacleParent;
+
+
+
+
     private Vector2Int[] directions = new Vector2Int[]
     {
         new Vector2Int(0, 1),   // North
@@ -34,8 +44,26 @@ public class MazeGenerator : MonoBehaviour
 
     void Start()
     {
+        // Crea oggetto vuoto genitore maze
+
+         mazeParent = new GameObject("MazeParent");
+         floorParent = new GameObject("FloorParent");
+         wallParent = new GameObject("WallParent");
+         flowerParent = new GameObject("FlowerParent");
+         obstacleParent = new GameObject("ObstacleParent");
+
+
+        floorParent.transform.parent = mazeParent.transform;
+        wallParent.transform.parent = mazeParent.transform;
+        flowerParent.transform.parent = mazeParent.transform;
+        obstacleParent.transform.parent = mazeParent.transform;
+
+
+
         GenerateGrid();
         StartCoroutine(GenerateMaze(Vector2Int.zero));
+
+
 
     }
 
@@ -146,11 +174,10 @@ public class MazeGenerator : MonoBehaviour
         //RandomFloorPosition();
 
         // Salva il labirinto come prefab
-        GameObject maze = this.gameObject; // oppure un altro GameObject root che rappresenta il labirinto
-        SaveMazeAsPrefab(maze, "Maze_" + System.DateTime.Now.ToString("yyyyMMdd_HHmmss"));
+        SaveMazeAsPrefab(mazeParent, "Maze_" + System.DateTime.Now.ToString("yyyyMMdd_HHmmss"));
 
         // Rimuovi script di generazione dal prefab
-        Destroy(maze.GetComponent<MazeGenerator>());
+        Destroy(mazeParent.GetComponent<MazeGenerator>());
     }
 
 
@@ -191,7 +218,7 @@ public class MazeGenerator : MonoBehaviour
         if (wallToRemove != null)
         {
             Destroy(wallToRemove);
-            targetInstance = Instantiate(targetPrefab, exitPos, wallToRemove.transform.rotation, transform);
+            targetInstance = Instantiate(targetPrefab, exitPos, wallToRemove.transform.rotation, mazeParent.transform);
 
         }
     }

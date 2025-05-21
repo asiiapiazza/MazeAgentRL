@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HoneyTarget
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 805c4179fc8603b4f904232d0fc786ee, type: 3}
+      propertyPath: m_TagString
+      value: Target
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

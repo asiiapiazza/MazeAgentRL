@@ -13,7 +13,6 @@ public class CubeAgent2 : Agent
     [SerializeField] private bool canAgentJump = false;
     [SerializeField] private int timeScale = 1;
 
-    [SerializeField] private int numberOfObstacles = 1;
 
     private Rigidbody rb;
 
@@ -25,10 +24,7 @@ public class CubeAgent2 : Agent
     private bool isGrounded = false; // Variabile per controllare se l'agente è a terra
     private int nonStraightMoveCount = 0; // Contatore dei movimenti non dritti
     private Transform[] floorCells;
-    private List<Transform> cells = new List<Transform>();
 
-    [SerializeField] private GameObject woodObstacle;
-    [SerializeField] private GameObject puddleObstacle;
     [SerializeField] private GameObject flowerPrefab;
 
 
@@ -62,8 +58,8 @@ public class CubeAgent2 : Agent
 
 
         //rimuovi una cella del pavimento per creare il buco
-        if (canAgentJump && numberOfObstacles > 0)
-            PlaceObsticles(numberOfObstacles);
+        //if (canAgentJump && numberOfObstacles > 0)
+        //    PlaceObsticles(numberOfObstacles);
 
         // spawna agente casualmente
         this.transform.position = RandomFloorPosition();
@@ -112,77 +108,7 @@ public class CubeAgent2 : Agent
     }
 
     //metodo per rimuovere casualmente una cella del pavimento
-    private void PlaceObsticles(int countObstacles)
-    {
-
-        // distruggo ostacoli precedenti
-        //cercalo solo nei fratelli di this
-
-        GameObject obstacles = null;
-        Transform randomCell;
-
-
-        Transform parent2 = this.transform.parent;
-        foreach (Transform sibling in parent2)
-        {
-            if (sibling.name == "Obstacles")
-            {
-                obstacles = sibling.gameObject;
-                DestroyAll(obstacles);
-            }
-        }
-
-
-
-        //itera per couuntoObstacles
-        for (int i = 0; i < countObstacles; i++)
-        {
-
-            //controlla che due osctaoli non siano vicini 
-            //fai 50 tentaitivi poi esci
-            int attempts = 0;
-            do
-            {
-                randomCell = cells[Random.Range(0, cells.Count)];
-                attempts++;
-                if (attempts > 50)
-                    break;
-            }
-            while (!GetNeighbors(randomCell) || isCellDeadEnd(randomCell.gameObject));
-
-
-  
-            var pos = randomCell.position;
-
-            //rimuovi cella dalla logica
-            randomCell.gameObject.SetActive(false);
-            cells.Remove(randomCell);
-            cellVisitCount.Remove(randomCell);
-
-            //GameObject obstacleInstance = Instantiate(obstaclePrefab, pos, Quaternion.identity, obstacles.transform);
-
-            int random = Random.Range(0, 2);
-
-            //dammi una rotazione casuale (0, 90, 180, 270)
-            //ma deve essere intera
-
-            int randomRotation = Random.Range(0, 4) * 90;
-            Quaternion rotation = Quaternion.identity;
-            rotation.y = randomRotation;
-
-            if (random == 1)
-            {
-                pos.y += -0.078f;
-                GameObject obstacleInstance = Instantiate(woodObstacle, pos, rotation, obstacles.transform);
-            }
-            else
-            {
-                GameObject obstacleInstance = Instantiate(puddleObstacle, pos, rotation, obstacles.transform);
-
-            }
-        }
-
-    }
+   
 
     private bool GetNeighbors(Transform cell)
     {
@@ -206,7 +132,7 @@ public class CubeAgent2 : Agent
     {
         currentCell = null;
         lastVisitedCell = null;
-        cells.Clear();
+        //cells.Clear();
         cellVisitCount.Clear();
 
         floorCells = floor.GetComponentsInChildren<Transform>(true);
@@ -214,8 +140,8 @@ public class CubeAgent2 : Agent
         {
             if (cell != floor.transform)
             {
-                cell.gameObject.SetActive(true);
-                cells.Add(cell);
+                //cell.gameObject.SetActive(true);
+                //cells.Add(cell);
                 cellVisitCount[cell] = 0; // Inizialmente tutte le celle hanno 0 visite
                 //cell.GetComponent<Renderer>().material.color = Color.white; // Resetta il colore delle celle
             }
@@ -266,10 +192,13 @@ public class CubeAgent2 : Agent
     // Funzione per assegnare una posizione casuale sul pavimento (e assegnare visita = 1 alla prima cella)
     private Vector3 RandomFloorPosition()
     {
-        if (cells != null && cells.Count != 0)
+        //ottengo oggetto padre floor
+
+
+        if (floorCells != null && floorCells.Length != 0)
         {
             // Scegli una cella casuale
-            Transform randomCell = cells[Random.Range(0, cells.Count)];
+            Transform randomCell = floorCells[Random.Range(0, floorCells.Length)];
 
             // Restituisci le coordinate del centro della cella
             Vector3 cellPosition = randomCell.position;

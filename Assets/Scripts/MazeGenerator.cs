@@ -2,8 +2,10 @@
 using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEditor.PlayerSettings;
 
 public class MazeGenerator : MonoBehaviour
@@ -11,18 +13,24 @@ public class MazeGenerator : MonoBehaviour
     public int width = 10;
     public int height = 10;
     public float cellSize = 3f;
+    public Camera topCamera;
 
     public GameObject floorPrefab;
     public GameObject wallPrefab;
     public GameObject targetPrefab;
     public GameObject agentPrefab;
 
+    [SerializeField] private GameObject woodObstacle;
+    [SerializeField] private GameObject puddleObstacle;
+    [SerializeField] private TMP_InputField numberOfObstacles;
+
+
+
 
     List<GameObject> cells = new List<GameObject>();
 
     private bool[,] visited;
     private Dictionary<Vector2Int, GameObject[]> wallsDict = new Dictionary<Vector2Int, GameObject[]>();
-    private GameObject targetInstance;
 
     // Crea oggetto genitore per pavimenti, muri, ostacoli, fiori
     GameObject mazeParent;
@@ -30,8 +38,6 @@ public class MazeGenerator : MonoBehaviour
     GameObject wallParent;
     GameObject flowerParent;
     GameObject obstacleParent;
-
-
 
 
     private Vector2Int[] directions = new Vector2Int[]
@@ -42,15 +48,15 @@ public class MazeGenerator : MonoBehaviour
         new Vector2Int(-1, 0),  // West
     };
 
-    void Start()
+    public void GenerateMaze()
     {
         // Crea oggetto vuoto genitore maze
+        mazeParent = new GameObject("MazeParent");
 
-         mazeParent = new GameObject("MazeParent");
-         floorParent = new GameObject("FloorParent");
-         wallParent = new GameObject("WallParent");
-         flowerParent = new GameObject("FlowerParent");
-         obstacleParent = new GameObject("ObstacleParent");
+        floorParent = new GameObject("FloorParent");
+        wallParent = new GameObject("WallParent");
+        flowerParent = new GameObject("FlowerParent");
+        obstacleParent = new GameObject("ObstacleParent");
 
 
         floorParent.transform.parent = mazeParent.transform;
@@ -58,12 +64,21 @@ public class MazeGenerator : MonoBehaviour
         flowerParent.transform.parent = mazeParent.transform;
         obstacleParent.transform.parent = mazeParent.transform;
 
-
-
-        GenerateGrid();
+        GenerateGrid(width, height);
         StartCoroutine(GenerateMaze(Vector2Int.zero));
 
 
+        //posiziona al centro
+        Vector3 areaCenter = new Vector3(410f, 0, 493); // o Vector3.zero o qualsiasi altro centro
+        float mazeWidth = width * cellSize;
+        float mazeHeight = height * cellSize;
+        Vector3 mazeOffset = new Vector3(-mazeWidth / 2f + cellSize / 2f, 0, -mazeHeight / 2f + cellSize / 2f);
+        mazeParent.transform.position = areaCenter + mazeOffset;
+
+        //setto dimensioni della camera in base alla dimensione
+
+        // Imposta orthographicSize per vedere tutto il labirinto
+        topCamera.orthographicSize = width * 2f; // padding opzionale, tipo 1f
 
     }
 
@@ -77,26 +92,141 @@ public class MazeGenerator : MonoBehaviour
     }
 
 
-    // Funzione per assegnare una posizione casuale sul pavimento (e assegnare visita = 1 alla prima cella)
-    private void RandomFloorPosition()
+    private void DestroyAll(GameObject parent)
     {
-        // Scegli una cella casuale
-        GameObject randomCell = cells[Random.Range(0, cells.Count)];
-        // Restituisci le coordinate del centro della cella
-        Vector3 cellPosition = randomCell.transform.position;
-        //cellPosition.y = transform.position.y; // Mantieni l'altezza dell'agente
-        Quaternion rot = Quaternion.Euler(Vector3.up * Random.Range(0f, 360f));
-        Instantiate(agentPrefab, cellPosition, rot, transform);
+        if (parent != null)
+        {
+            foreach (Transform child in parent.transform)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+    }
+    private bool GetNeighbors(Transform cell)
+    {
+        // Ottieni la cella davanti e dietro usando raycast dalla cella data  
+        _ = Physics.Raycast(cell.position, cell.forward, out RaycastHit frontHit, 2f);
+        _ = Physics.Raycast(cell.position, -cell.forward, out RaycastHit backHit, 2f);
+        _ = Physics.Raycast(cell.position, -cell.right, out RaycastHit leftHit, 2f);
+        _ = Physics.Raycast(cell.position, cell.right, out RaycastHit rightHit, 2f);
 
-        CubeAgent2 scriptInstance = agentPrefab.GetComponent<CubeAgent2>();
-        // Assegna valori ai campi dello script
-        scriptInstance.floor = floorParent;
+        //se uno di questi ha il collider che hitta un oggetto taggato obstacles oppure niente, allora returna false
+        if (frontHit.collider == null || backHit.collider == null || leftHit.collider == null || rightHit.collider == null)
+            return false;
+        else if (frontHit.collider.CompareTag("Obstacle") || backHit.collider.CompareTag("Obstacle") || leftHit.collider.CompareTag("Obstacle") || rightHit.collider.CompareTag("Obstacle"))
+            return false;
+        else
+            return true;
+    }
+
+    private bool isCellDeadEnd(GameObject cell)
+    {
+
+        //check se cella corrente è circondata da almeno 3 muri
+        _ = Physics.Raycast(cell.transform.position, cell.transform.forward, out RaycastHit frontHit, 2f);
+        _ = Physics.Raycast(cell.transform.position, -cell.transform.forward, out RaycastHit backHit, 2f);
+        _ = Physics.Raycast(cell.transform.position, -cell.transform.right, out RaycastHit leftHit, 2f);
+        _ = Physics.Raycast(cell.transform.position, cell.transform.right, out RaycastHit rightHit, 2f);
+
+        //devono essere almeno 3
+        int wallCount = 0;
+        if (frontHit.collider != null && frontHit.collider.CompareTag("Wall")) wallCount++;
+        if (backHit.collider != null && backHit.collider.CompareTag("Wall")) wallCount++;
+        if (rightHit.collider != null && rightHit.collider.CompareTag("Wall")) wallCount++;
+        if (leftHit.collider != null && leftHit.collider.CompareTag("Wall")) wallCount++;
+
+        if (wallCount >= 3)
+            return true;
+        else
+            return false;
     }
 
 
-
-    void GenerateGrid()
+    private void PlaceObsticles()
     {
+
+        //prendo i numeri di ostacoli presi dalla inputtextbox, altrimenti sono 0
+
+
+        string nObs = numberOfObstacles.text;
+
+        //converti ad intero nObs
+        int numberOfObstaclesint = 0;
+        int.TryParse(nObs, out numberOfObstaclesint);
+  
+
+
+        // distruggo ostacoli precedenti
+        //cercalo solo nei fratelli di this
+
+        GameObject obstacles = null;
+        Transform randomCell;
+
+
+        foreach (Transform sibling in mazeParent.transform)
+        {
+            if (sibling.name == "ObstacleParent")
+            {
+                obstacles = sibling.gameObject;
+                DestroyAll(obstacles);
+            }
+        }
+
+
+
+        //itera per couuntoObstacles
+        for (int i = 0; i < numberOfObstaclesint; i++)
+        {
+
+            //controlla che due osctaoli non siano vicini 
+            //fai 50 tentaitivi poi esci
+            int attempts = 0;
+            do
+            {
+                randomCell = cells[Random.Range(0, cells.Count)].transform;
+                attempts++;
+                if (attempts > 50)
+                    break;
+            }
+            while (!GetNeighbors(randomCell) || isCellDeadEnd(randomCell.gameObject));
+
+
+
+            var pos = randomCell.position;
+
+            //rimuovi cella dalla logica
+            randomCell.gameObject.SetActive(false);
+            cells.Remove(randomCell.gameObject);
+            //cellVisitCount.Remove(randomCell);
+
+
+            int random = Random.Range(0, 2);
+
+            //dammi una rotazione casuale (0, 90, 180, 270)
+            //ma deve essere intera
+
+            int randomRotation = Random.Range(0, 4) * 90;
+            Quaternion rotation = Quaternion.identity;
+            rotation.y = randomRotation;
+
+            if (random == 1)
+            {
+                pos.y += -0.078f;
+                GameObject obstacleInstance = Instantiate(woodObstacle, pos, rotation, obstacles.transform);
+            }
+            else
+            {
+                GameObject obstacleInstance = Instantiate(puddleObstacle, pos, rotation, obstacles.transform);
+
+            }
+        }
+
+    }
+
+
+    void GenerateGrid(int width, int height)
+    {
+        cells.Clear();
         visited = new bool[width, height];
         for (int x = 0; x < width; x++)
         {
@@ -125,11 +255,7 @@ public class MazeGenerator : MonoBehaviour
             }
         }
 
-        // Calcolo posizione per centrare il labirinto
-        float mazeWidth = width * cellSize;
-        float mazeHeight = height * cellSize;
-        Vector3 centerOffset = new Vector3(-mazeWidth / 2f + cellSize / 2f, 0, -mazeHeight / 2f + cellSize / 2f);
-        transform.position = centerOffset;
+
     }
 
 
@@ -171,13 +297,41 @@ public class MazeGenerator : MonoBehaviour
 
         PlaceExit(last);
 
-        //RandomFloorPosition();
+
+        PlaceObsticles();
+        SpawnAgent();
 
         // Salva il labirinto come prefab
-        SaveMazeAsPrefab(mazeParent, "Maze_" + System.DateTime.Now.ToString("yyyyMMdd_HHmmss"));
+        //SaveMazeAsPrefab(mazeParent, "Maze_" + System.DateTime.Now.ToString("yyyyMMdd_HHmmss"));
 
         // Rimuovi script di generazione dal prefab
-        Destroy(mazeParent.GetComponent<MazeGenerator>());
+        // Destroy(mazeParent.GetComponent<MazeGenerator>());
+
+
+    }
+
+
+
+
+    void SpawnAgent()
+    {
+        //prendi una cella casuale
+        GameObject randomCell = cells[Random.Range(0, cells.Count)];
+        Vector3 pos = randomCell.transform.position;
+        pos.y += 0.5f; // alza l'agente sopra il pavimento
+
+        GameObject agentInstance = Instantiate(agentPrefab, pos, Quaternion.identity, mazeParent.transform);
+        CubeAgent2 script = agentInstance.GetComponent<CubeAgent2>();
+
+        script.wall = wallParent;
+        script.floor = floorParent;
+        script.flowers = flowerParent;
+
+        //piazzo l'agente però non lo faccio partire
+        script.enabled = false;
+        agentInstance.SetActive(false);
+
+
     }
 
 
@@ -185,43 +339,52 @@ public class MazeGenerator : MonoBehaviour
     {
         Vector3 exitPos = Vector3.zero;
         GameObject wallToRemove = null;
+        GameObject[] wallOptions = wallsDict[last];
 
-        // Determina quale lato è sul bordo
-        if (last.y == height - 1)  // bordo nord
+        if (last.y == height - 1 && wallOptions[0] != null)  // bordo nord
         {
-            wallToRemove = wallsDict[last][0];
-            exitPos = wallToRemove.transform.position;
+            wallToRemove = wallOptions[0];
         }
-        else if (last.x == width - 1) // bordo est
+        else if (last.x == width - 1 && wallOptions[1] != null) // bordo est
         {
-            wallToRemove = wallsDict[last][1];
-            exitPos = wallToRemove.transform.position;
+            wallToRemove = wallOptions[1];
         }
-        else if (last.y == 0) // bordo sud
+        else if (last.y == 0 && wallOptions[2] != null) // bordo sud
         {
-            wallToRemove = wallsDict[last][2];
-            exitPos = wallToRemove.transform.position;
+            wallToRemove = wallOptions[2];
         }
-        else if (last.x == 0) // bordo ovest
+        else if (last.x == 0 && wallOptions[3] != null) // bordo ovest
         {
-            wallToRemove = wallsDict[last][3];
-            exitPos = wallToRemove.transform.position;
+            wallToRemove = wallOptions[3];
         }
         else
         {
-            // Se non è sul bordo, scegli un lato a caso da aprire
-            int border = Random.Range(0, 4);
-            wallToRemove = wallsDict[last][border];
-            exitPos = wallToRemove.transform.position;
+            // Se non è sul bordo o il muro è già stato distrutto, scegli uno ancora presente
+            List<int> validWalls = new List<int>();
+            for (int i = 0; i < wallOptions.Length; i++)
+            {
+                if (wallOptions[i] != null)
+                    validWalls.Add(i);
+            }
+
+            if (validWalls.Count > 0)
+            {
+                int chosenIndex = validWalls[Random.Range(0, validWalls.Count)];
+                wallToRemove = wallOptions[chosenIndex];
+            }
+            else
+            {
+                Debug.LogWarning("Nessun muro disponibile per creare un'uscita.");
+                return;
+            }
         }
 
-        if (wallToRemove != null)
-        {
-            Destroy(wallToRemove);
-            targetInstance = Instantiate(targetPrefab, exitPos, wallToRemove.transform.rotation, mazeParent.transform);
+        exitPos = wallToRemove.transform.position;
 
-        }
+        Destroy(wallToRemove);
+        Instantiate(targetPrefab, exitPos, wallToRemove.transform.rotation, mazeParent.transform);
     }
+
 
     void RemoveWallBetween(Vector2Int a, Vector2Int b)
     {

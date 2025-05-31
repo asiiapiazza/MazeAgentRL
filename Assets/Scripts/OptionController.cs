@@ -1,3 +1,4 @@
+using Assets.Scripts;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -6,6 +7,7 @@ public class OptionController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public MazeGenerator mazeGenerator;
     public GameObject minimap;
+    public TMPro.TextMeshProUGUI text;
 
     private void DeleteMaze()
     {
@@ -19,32 +21,34 @@ public class OptionController : MonoBehaviour
 
     public void GenerateMaze_5x5()
     {
-        //disattiva minimap
-        minimap.SetActive(false);
-
-        DeleteMaze();
-        mazeGenerator.GenerateMaze();
+        Reset();
+        mazeGenerator.GenerateMaze();     
     }
 
     public void GenerateMaze_7x7()
     {
-        minimap.SetActive(false);
-        DeleteMaze();
+        Reset();
         mazeGenerator.GenerateMaze();
     }
 
     public void GenerateMaze_10x10()
     {
-        minimap.SetActive(false);
-        DeleteMaze();
+        Reset();
         mazeGenerator.GenerateMaze();
     }
 
     public void GenerateMaze_15x15()
     {
-        minimap.SetActive(false);
-        DeleteMaze();
+        Reset();
         mazeGenerator.GenerateMaze();
     }
 
+
+    private void Reset()
+    {
+        text.text = " "; //resetto testo
+        AgentState.bottoneCliccato = false; //resetto bottone cliccato
+        minimap.SetActive(false);
+        DeleteMaze();
+    }
 }

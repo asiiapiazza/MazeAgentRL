@@ -6906,6 +6906,14 @@ PrefabInstance:
       propertyPath: targetL
       value: 
       objectReference: {fileID: 5955530755448990629}
+    - target: {fileID: 2729047772457914453, guid: 685d448c66e7fdd4b90aa6a2b6cd1287, type: 3}
+      propertyPath: wall
+      value: 
+      objectReference: {fileID: 3670725852732445220}
+    - target: {fileID: 2729047772457914453, guid: 685d448c66e7fdd4b90aa6a2b6cd1287, type: 3}
+      propertyPath: floor
+      value: 
+      objectReference: {fileID: 8293772335008473127}
     - target: {fileID: 5758915795981160280, guid: 685d448c66e7fdd4b90aa6a2b6cd1287, type: 3}
       propertyPath: m_LocalPosition.x
       value: 11.745235

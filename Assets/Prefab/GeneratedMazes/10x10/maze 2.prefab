@@ -24350,6 +24350,18 @@ PrefabInstance:
       propertyPath: numberOfObstacles
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 2729047772457914453, guid: 685d448c66e7fdd4b90aa6a2b6cd1287, type: 3}
+      propertyPath: wall
+      value: 
+      objectReference: {fileID: 70005832664703799}
+    - target: {fileID: 2729047772457914453, guid: 685d448c66e7fdd4b90aa6a2b6cd1287, type: 3}
+      propertyPath: floor
+      value: 
+      objectReference: {fileID: 4213201412574082140}
+    - target: {fileID: 2729047772457914453, guid: 685d448c66e7fdd4b90aa6a2b6cd1287, type: 3}
+      propertyPath: canAgentJump
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5758915795981160280, guid: 685d448c66e7fdd4b90aa6a2b6cd1287, type: 3}
       propertyPath: m_LocalPosition.x
       value: 20

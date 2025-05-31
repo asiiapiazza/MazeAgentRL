@@ -19,12 +19,14 @@ public class MazeGenerator : MonoBehaviour
     public GameObject wallPrefab;
     public GameObject targetPrefab;
     public GameObject agentPrefab;
+    public TMPro.TextMeshProUGUI resulText;
+
 
     [SerializeField] private GameObject woodObstacle;
     [SerializeField] private GameObject puddleObstacle;
     [SerializeField] private TMP_InputField numberOfObstacles;
-
-
+    private GameObject targetInstance;
+    private GameObject agentInstance;
 
 
     List<GameObject> cells = new List<GameObject>();
@@ -294,12 +296,15 @@ public class MazeGenerator : MonoBehaviour
                 yield return null; // per animare la generazione
             }
         }
-
+        PlaceObsticles();
         PlaceExit(last);
 
-
-        PlaceObsticles();
+        //aspetto che finiscano i due metodi
         SpawnAgent();
+
+        //assegna mazecontroller
+        AssignMazeController();
+
 
         // Salva il labirinto come prefab
         //SaveMazeAsPrefab(mazeParent, "Maze_" + System.DateTime.Now.ToString("yyyyMMdd_HHmmss"));
@@ -310,7 +315,14 @@ public class MazeGenerator : MonoBehaviour
 
     }
 
+    void AssignMazeController()
+    {
+        MazeController mazeController = this.mazeParent.AddComponent<MazeController>();
+        mazeController.text = resulText;
+        mazeController.agent = agentInstance;
+        mazeController.maze = this.mazeParent;
 
+    }
 
 
     void SpawnAgent()
@@ -320,12 +332,12 @@ public class MazeGenerator : MonoBehaviour
         Vector3 pos = randomCell.transform.position;
         pos.y += 0.5f; // alza l'agente sopra il pavimento
 
-        GameObject agentInstance = Instantiate(agentPrefab, pos, Quaternion.identity, mazeParent.transform);
+        agentInstance = Instantiate(agentPrefab, pos, Quaternion.identity, mazeParent.transform);
         CubeAgent2 script = agentInstance.GetComponent<CubeAgent2>();
 
         script.wall = wallParent;
-        script.floor = floorParent;
         script.flowers = flowerParent;
+        script.floor = floorParent;
 
         //piazzo l'agente però non lo faccio partire
         script.enabled = false;
@@ -382,7 +394,7 @@ public class MazeGenerator : MonoBehaviour
         exitPos = wallToRemove.transform.position;
 
         Destroy(wallToRemove);
-        Instantiate(targetPrefab, exitPos, wallToRemove.transform.rotation, mazeParent.transform);
+        targetInstance = Instantiate(targetPrefab, exitPos, wallToRemove.transform.rotation, mazeParent.transform);
     }
 
 

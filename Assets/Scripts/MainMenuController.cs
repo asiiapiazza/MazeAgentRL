@@ -1,4 +1,7 @@
+using Assets.Scripts;
 using Unity.MLAgents;
+using Unity.Sentis;
+using UnityEditor;
 using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,6 +10,7 @@ public class MainMenuController : MonoBehaviour
 {
     public GameObject sizeOptions;
     public GameObject minimap;
+    public TMPro.TextMeshProUGUI startButtonText; // Se usi UI.Text
 
 
     public void StartGame() => SceneManager.LoadScene("Main");
@@ -24,43 +28,58 @@ public class MainMenuController : MonoBehaviour
         sizeOptions.SetActive(!sizeOptions.activeSelf); // attiva/disattiva
     }
 
- 
+
     public void GotoMain()
     {
         //CARICA SCENA MAINmenu
         SceneManager.LoadScene("Menu");
     }
 
-    public void StartAgent()
+    public void OnStartButtonClicked()
     {
-        //una volta che ho il labirinto, attivo l'agente
+
+
         GameObject maze = GameObject.Find("MazeParent");
 
-        var childrens = maze.GetComponentsInChildren<Transform>(true);
-
-        //prendi figlio da boh
-        GameObject agent = null;
-        foreach (var item in childrens)
+        if (maze != null)
         {
-            if (item.name == "BearFinal(Clone)")
+            var childrens = maze.GetComponentsInChildren<Transform>(true);
+            GameObject agent = null;
+            foreach (var item in childrens)
             {
-                agent = item.gameObject;
-                break;
+                if (item.name == "BearFinal(Clone)")
+                {
+                    agent = item.gameObject;
+                    break;
+                }
             }
+
+            if (agent != null)
+            {
+                CubeAgent2 script = agent.GetComponent<CubeAgent2>();
+
+                //episodio gia iniziato? posso resettare
+                if (AgentState.bottoneCliccato == false)
+                {
+                    // Primo avvio
+                    script.enabled = true;
+                    agent.SetActive(true);
+                    AgentState.bottoneCliccato = true;
+                    startButtonText.text = "Start";
+
+                }
+                else //episodio non ancora iniziato
+                {
+                    // Restart episodio
+                    script.RestartEpisode();
+
+                }
+            }
+
+            // Attiva la minimappa
+            minimap.SetActive(true);
         }
 
-        if (agent != null)
-        {
-            CubeAgent2 script = agent.GetComponent<CubeAgent2>();
-            script.enabled = true;
-            agent.SetActive(true);
-
-            
-        }
-
-        //attivo minimappa
-         minimap.SetActive(true);
-        
     }
 
 }

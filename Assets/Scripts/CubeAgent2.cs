@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
@@ -12,65 +13,62 @@ public class CubeAgent2 : Agent
     [SerializeField] private float moveSpeed = 4f;
     [SerializeField] private bool canAgentJump = false;
     [SerializeField] private int timeScale = 1;
+    [SerializeField] private GameObject flowerPrefab;
 
-
-    private Rigidbody rb;
-
-    private Vector3 startPosition;
+    // campi publici perche devono essere accessibili da mazegenerator
     public GameObject floor;
     public GameObject wall; // Prefab del muro da generare
     public GameObject flowers; // Prefab del muro da generare
 
+    private Rigidbody rb;
+    private bool episodeEnded = false;
+    private Vector3 startPosition;
     private bool isGrounded = false; // Variabile per controllare se l'agente è a terra
     private int nonStraightMoveCount = 0; // Contatore dei movimenti non dritti
     private Transform[] floorCells;
 
-    [SerializeField] private GameObject flowerPrefab;
 
 
 
     public Animator animator;
-
     private GameObject lastVisitedCell = null; // Memorizza l'ultima cella visitata
     private GameObject currentCell = null; // Memorizza la cella corrente  
     private Dictionary<Transform, int> cellVisitCount = new Dictionary<Transform, int>(); // Contatore delle visite per cella
-
-
-
+    private MazeController mazeController;
+    private int totalVisitedCells = 0; // Contatore totale delle celle visitate
     public override void Initialize()
     {
-        //minimapCamera.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         Time.timeScale = timeScale;
         rb = GetComponent<Rigidbody>();
         startPosition = transform.localPosition;
+        mazeController = this.GetComponentInParent<MazeController>();
     }
 
 
 
     public override void OnEpisodeBegin()
     {
-        transform.localPosition = startPosition;
-        nonStraightMoveCount = 0; // Resetta il contatore dei movimenti non dritti
+        if (!episodeEnded)
+        {
+            totalVisitedCells = 0;
+            transform.localPosition = startPosition;
+            nonStraightMoveCount = 0; // Resetta il contatore dei movimenti non dritti
 
 
-        // Resetta lo stato delle celle esplorate
-        InitiateFloor();
+            // Resetta lo stato delle celle esplorate
+            InitiateFloor();
 
+            // spawna agente casualmente
+            this.transform.position = RandomFloorPosition();
 
-        //rimuovi una cella del pavimento per creare il buco
-        //if (canAgentJump && numberOfObstacles > 0)
-        //    PlaceObsticles(numberOfObstacles);
+            currentCell = GetCurrentCell();
+            this.rb.linearVelocity = Vector3.zero;
+            this.rb.angularVelocity = Vector3.zero;
+            this.transform.rotation = Quaternion.Euler(Vector3.up * Random.Range(0f, 360f));
 
-        // spawna agente casualmente
-        this.transform.position = RandomFloorPosition();
+            //PickWallAsTarget();
+        }
 
-        currentCell = GetCurrentCell();
-
-        this.rb.linearVelocity = Vector3.zero;
-        this.rb.angularVelocity = Vector3.zero;
-        this.transform.rotation = Quaternion.Euler(Vector3.up * Random.Range(0f, 360f));
-
-        //PickWallAsTarget();
     }
 
 
@@ -85,48 +83,7 @@ public class CubeAgent2 : Agent
         }
     }
 
-    private bool isCellDeadEnd(GameObject cell)
-    {
-
-        //check se cella corrente è circondata da almeno 3 muri
-        _ = Physics.Raycast(cell.transform.position, cell.transform.forward, out RaycastHit frontHit, 2f);
-        _ = Physics.Raycast(cell.transform.position, -cell.transform.forward, out RaycastHit backHit, 2f);
-        _ = Physics.Raycast(cell.transform.position, -cell.transform.right, out RaycastHit leftHit, 2f);
-        _ = Physics.Raycast(cell.transform.position, cell.transform.right, out RaycastHit rightHit, 2f);
-
-        //devono essere almeno 3
-        int wallCount = 0;
-        if (frontHit.collider != null && frontHit.collider.CompareTag("Wall")) wallCount++;
-        if (backHit.collider != null && backHit.collider.CompareTag("Wall")) wallCount++;
-        if (rightHit.collider != null && rightHit.collider.CompareTag("Wall")) wallCount++;
-        if (leftHit.collider != null && leftHit.collider.CompareTag("Wall")) wallCount++;
-
-        if (wallCount >= 3)
-            return true;
-        else
-            return false;
-    }
-
-    //metodo per rimuovere casualmente una cella del pavimento
    
-
-    private bool GetNeighbors(Transform cell)
-    {
-        // Ottieni la cella davanti e dietro usando raycast dalla cella data  
-        _ = Physics.Raycast(cell.position, cell.forward, out RaycastHit frontHit, 2f);
-        _ = Physics.Raycast(cell.position, -cell.forward, out RaycastHit backHit, 2f);
-        _ = Physics.Raycast(cell.position, -cell.right, out RaycastHit leftHit, 2f);
-        _ = Physics.Raycast(cell.position, cell.right, out RaycastHit rightHit, 2f);
-
-        //se uno di questi ha il collider che hitta un oggetto taggato obstacles oppure niente, allora returna false
-        if (frontHit.collider == null || backHit.collider == null || leftHit.collider == null || rightHit.collider == null)
-            return false;
-        else if (frontHit.collider.CompareTag("Obstacle") || backHit.collider.CompareTag("Obstacle") || leftHit.collider.CompareTag("Obstacle") || rightHit.collider.CompareTag("Obstacle"))
-            return false;
-        else
-            return true;
-    }
-
     #region CellMethods
     private void InitiateFloor()
     {
@@ -134,8 +91,9 @@ public class CubeAgent2 : Agent
         lastVisitedCell = null;
         //cells.Clear();
         cellVisitCount.Clear();
-
+        
         floorCells = floor.GetComponentsInChildren<Transform>(true);
+
         foreach (Transform cell in floorCells)
         {
             if (cell != floor.transform)
@@ -180,15 +138,6 @@ public class CubeAgent2 : Agent
 
     #region "Randomiziation Position"
 
-
-    private void AssignWallProperties(GameObject wall, bool isTarget)
-    {
-        wall.tag = isTarget ? "Target" : "Wall";
-        //assegna colore #ECA12F al rendere
-        ColorUtility.TryParseHtmlString("#ECA12F", out Color color);
-        wall.GetComponent<Renderer>().material.color = isTarget ? Color.magenta : color;
-        wall.GetComponent<Collider>().isTrigger = isTarget;
-    }
     // Funzione per assegnare una posizione casuale sul pavimento (e assegnare visita = 1 alla prima cella)
     private Vector3 RandomFloorPosition()
     {
@@ -209,34 +158,6 @@ public class CubeAgent2 : Agent
     }
 
 
-    private void PickWallAsTarget()
-    {
-
-        //prendi figli di wall 
-        Transform[] walls = wall.GetComponentsInChildren<Transform>();
-
-        //RIMUOVI PRIMO ELEENTO
-        List<Transform> wallsList = new List<Transform>(walls);
-        wallsList.RemoveAt(0);
-
-        // Resetta proprietà di tutti i muri e target
-        foreach (Transform obj in wallsList)
-        {
-            //se l'oggetto ha il componente render
-            if (obj.gameObject.GetComponent<Renderer>() != null)
-            {
-                AssignWallProperties(obj.gameObject, false);
-            }
-        }
-
-        // Seleziona un muro casuale e assegna come target
-        if (walls.Length > 0)
-        {
-            Transform randomWall = wallsList[Random.Range(0, wallsList.Count)];
-            AssignWallProperties(randomWall.gameObject, true);
-        }
-
-    }
 
 #endregion
 
@@ -401,14 +322,6 @@ public class CubeAgent2 : Agent
 
     }
 
-    private (bool, RaycastHit) GetDownRayCast(float distance)
-    {
-        bool r = Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, distance);
-        return (r, hit);
-    }
-
-
-
     public override void OnActionReceived(ActionBuffers actions)
     {
         // 3 azioni
@@ -484,11 +397,6 @@ public class CubeAgent2 : Agent
         // Aggiorna la posizione per il prossimo frame
         startPosition = transform.position;
 
-        // Controllo se ci sono input WASD o frecce
-        //bool isMoving = Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0;
-
-        //// Imposta il parametro nell'animator
-        //animator.SetBool("isWalking", isMoving);
     }
 
     void Restart()
@@ -512,19 +420,12 @@ public class CubeAgent2 : Agent
             AddReward(0.1f);
 
             cellVisitCount[currentCell.transform]++;
-
+            totalVisitedCells++;
             Vector3 flowerPosition = currentCell.transform.position;
             flowerPosition.y += 0.1f; // Alza il fiore sopra la cella
 
             // Istanzia fiore nell'obejct parent Flower con un delay di mezzo secondo
             StartCoroutine(SpawnFlowerWithDelay(flowerPosition));
-
-
-
-            // Cambia il colore della cella per indicare che è stata esplorata
-            //var renderer = currentCell.transform.GetComponent<Renderer>();
-            //if (renderer != null)
-            //    renderer.material.color = Color.cyan;
 
 
         }
@@ -544,7 +445,6 @@ public class CubeAgent2 : Agent
             {
                 float intensity = Mathf.Clamp01(cellVisitCount[currentCell.transform] / 10f); // Normalizza l'intensità tra 0 e 1       
                                                                                               // Colore dal blu chiaro a blu scuro
-                //renderer.material.color = Color.Lerp(Color.cyan, Color.blue, intensity);
             }
 
             if (visits >1)
@@ -568,32 +468,8 @@ public class CubeAgent2 : Agent
     }
 
 
-    #region UtilityMethods
-    //void OnDrawGizmos()
-    //{
-    //    foreach (Transform cell in cellVisitCount.Keys)
-    //    {
-    //        Bounds bounds = cell.GetComponent<Collider>().bounds;
-    //        Gizmos.color = Color.green;
-    //        Gizmos.DrawWireCube(bounds.center, bounds.size);
-    //    }
-    //}
-
-
-    #endregion
-
 
     #region BoolMethodsCheck
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Target"))
-        {
-            SetReward(10f);
-            EndEpisode();
-
-        }
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Obstacle"))
@@ -606,7 +482,6 @@ public class CubeAgent2 : Agent
             isGrounded = true;
             GameObject landedCell = collision.collider.gameObject;
 
-
             // controllo se la landed cell ha un ostacolo vicino a lei
             _ = Physics.Raycast(landedCell.transform.position, Vector3.back, out RaycastHit hit, 2f);
 
@@ -615,8 +490,6 @@ public class CubeAgent2 : Agent
             if (jumpedOverObstacle && cellBeforeJump != null && landedCell != cellBeforeJump && (hit.collider == null || hit.collider.tag == "Obstacle"))
             {
                 AddReward(0.1f);  // Premio perché ha davvero superato un ostacolo
-
-
             }
 
             // Reset
@@ -625,10 +498,13 @@ public class CubeAgent2 : Agent
         else if(collision.gameObject.CompareTag("Target"))
         {
             SetReward(10f);
-            EndEpisode();
+            mazeController.TargetReached(totalVisitedCells);
+            //episodio terminato e disattivo agente
+            episodeEnded = true;
+            this.enabled = false;  // Disattiva l'agente
+
         }
     }
-
 
     private bool IsGrounded()
     {
@@ -642,7 +518,14 @@ public class CubeAgent2 : Agent
     }
     #endregion
 
+    public void RestartEpisode()
+    {
+        episodeEnded = false;
+        this.enabled = true; // Riattiva l'agente
+        mazeController.ResetText();
+        EndEpisode(); 
+    }
 
-   
+
 }
 

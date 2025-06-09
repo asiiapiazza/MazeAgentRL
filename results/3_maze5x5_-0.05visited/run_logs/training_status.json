@@ -1,0 +1,65 @@
+{
+    "CubeAgent": {
+        "checkpoints": [
+            {
+                "steps": 939992,
+                "file_path": "results\\3_maze5x5_-0.05visited\\CubeAgent\\CubeAgent-939992.onnx",
+                "reward": 10.655909711664373,
+                "creation_time": 1749027749.9975724,
+                "auxillary_file_paths": [
+                    "results\\3_maze5x5_-0.05visited\\CubeAgent\\CubeAgent-939992.pt"
+                ]
+            },
+            {
+                "steps": 959901,
+                "file_path": "results\\3_maze5x5_-0.05visited\\CubeAgent\\CubeAgent-959901.onnx",
+                "reward": 10.718846614544209,
+                "creation_time": 1749027801.133929,
+                "auxillary_file_paths": [
+                    "results\\3_maze5x5_-0.05visited\\CubeAgent\\CubeAgent-959901.pt"
+                ]
+            },
+            {
+                "steps": 979836,
+                "file_path": "results\\3_maze5x5_-0.05visited\\CubeAgent\\CubeAgent-979836.onnx",
+                "reward": 11.381177172941321,
+                "creation_time": 1749027851.7722683,
+                "auxillary_file_paths": [
+                    "results\\3_maze5x5_-0.05visited\\CubeAgent\\CubeAgent-979836.pt"
+                ]
+            },
+            {
+                "steps": 999995,
+                "file_path": "results\\3_maze5x5_-0.05visited\\CubeAgent\\CubeAgent-999995.onnx",
+                "reward": 8.888036182948522,
+                "creation_time": 1749027893.598601,
+                "auxillary_file_paths": [
+                    "results\\3_maze5x5_-0.05visited\\CubeAgent\\CubeAgent-999995.pt"
+                ]
+            },
+            {
+                "steps": 1000484,
+                "file_path": "results\\3_maze5x5_-0.05visited\\CubeAgent\\CubeAgent-1000484.onnx",
+                "reward": 8.331000518798827,
+                "creation_time": 1749027893.9145398,
+                "auxillary_file_paths": [
+                    "results\\3_maze5x5_-0.05visited\\CubeAgent\\CubeAgent-1000484.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1000484,
+            "file_path": "results\\3_maze5x5_-0.05visited\\CubeAgent.onnx",
+            "reward": 8.331000518798827,
+            "creation_time": 1749027893.9145398,
+            "auxillary_file_paths": [
+                "results\\3_maze5x5_-0.05visited\\CubeAgent\\CubeAgent-1000484.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.6.0+cu126"
+    }
+}

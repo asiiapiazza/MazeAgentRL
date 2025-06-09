@@ -19,7 +19,7 @@ public class MazeGenerator : MonoBehaviour
     public GameObject wallPrefab;
     public GameObject targetPrefab;
     public GameObject agentPrefab;
-    public TMPro.TextMeshProUGUI resulText;
+    public TMPro.TextMeshProUGUI resultText;
 
 
     [SerializeField] private GameObject woodObstacle;
@@ -318,7 +318,7 @@ public class MazeGenerator : MonoBehaviour
     void AssignMazeController()
     {
         MazeController mazeController = this.mazeParent.AddComponent<MazeController>();
-        mazeController.text = resulText;
+        mazeController.text = resultText;
         mazeController.agent = agentInstance;
         mazeController.maze = this.mazeParent;
 
@@ -333,7 +333,7 @@ public class MazeGenerator : MonoBehaviour
         pos.y += 0.5f; // alza l'agente sopra il pavimento
 
         agentInstance = Instantiate(agentPrefab, pos, Quaternion.identity, mazeParent.transform);
-        CubeAgent2 script = agentInstance.GetComponent<CubeAgent2>();
+        CubeAgent script = agentInstance.GetComponent<CubeAgent>();
 
         script.wall = wallParent;
         script.flowers = flowerParent;

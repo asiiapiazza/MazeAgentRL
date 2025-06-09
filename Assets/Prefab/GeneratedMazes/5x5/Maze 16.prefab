@@ -6910,6 +6910,10 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 2747759393237670009}
+    - target: {fileID: 2729047772457914453, guid: 685d448c66e7fdd4b90aa6a2b6cd1287, type: 3}
+      propertyPath: timeScale
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 5758915795981160280, guid: 685d448c66e7fdd4b90aa6a2b6cd1287, type: 3}
       propertyPath: m_LocalPosition.x
       value: 11.2

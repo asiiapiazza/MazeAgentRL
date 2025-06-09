@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Grassblock
-    second: {fileID: 2100000, guid: 4d2b3c4f6dba2334d8706f9bd5b6129c, type: 2}
+    second: {fileID: 2100000, guid: 5165553c2985c2549b4a036582badabb, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule

@@ -1,0 +1,65 @@
+{
+    "CubeAgent": {
+        "checkpoints": [
+            {
+                "steps": 939998,
+                "file_path": "results\\2_obstacles_straight2\\CubeAgent\\CubeAgent-939998.onnx",
+                "reward": 9.544753866929275,
+                "creation_time": 1748856291.1510046,
+                "auxillary_file_paths": [
+                    "results\\2_obstacles_straight2\\CubeAgent\\CubeAgent-939998.pt"
+                ]
+            },
+            {
+                "steps": 959974,
+                "file_path": "results\\2_obstacles_straight2\\CubeAgent\\CubeAgent-959974.onnx",
+                "reward": 10.24416677157084,
+                "creation_time": 1748856348.597999,
+                "auxillary_file_paths": [
+                    "results\\2_obstacles_straight2\\CubeAgent\\CubeAgent-959974.pt"
+                ]
+            },
+            {
+                "steps": 979965,
+                "file_path": "results\\2_obstacles_straight2\\CubeAgent\\CubeAgent-979965.onnx",
+                "reward": 10.180065757349917,
+                "creation_time": 1748856402.2779968,
+                "auxillary_file_paths": [
+                    "results\\2_obstacles_straight2\\CubeAgent\\CubeAgent-979965.pt"
+                ]
+            },
+            {
+                "steps": 999994,
+                "file_path": "results\\2_obstacles_straight2\\CubeAgent\\CubeAgent-999994.onnx",
+                "reward": 10.249039993286132,
+                "creation_time": 1748856453.7426178,
+                "auxillary_file_paths": [
+                    "results\\2_obstacles_straight2\\CubeAgent\\CubeAgent-999994.pt"
+                ]
+            },
+            {
+                "steps": 1000002,
+                "file_path": "results\\2_obstacles_straight2\\CubeAgent\\CubeAgent-1000002.onnx",
+                "reward": 10.23207406644468,
+                "creation_time": 1748856453.977168,
+                "auxillary_file_paths": [
+                    "results\\2_obstacles_straight2\\CubeAgent\\CubeAgent-1000002.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1000002,
+            "file_path": "results\\2_obstacles_straight2\\CubeAgent.onnx",
+            "reward": 10.23207406644468,
+            "creation_time": 1748856453.977168,
+            "auxillary_file_paths": [
+                "results\\2_obstacles_straight2\\CubeAgent\\CubeAgent-1000002.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.6.0+cu126"
+    }
+}

@@ -1,0 +1,65 @@
+{
+    "CubeAgent": {
+        "checkpoints": [
+            {
+                "steps": 639534,
+                "file_path": "results\\3_maze5x5condrittirewardbassi3\\CubeAgent\\CubeAgent-639534.onnx",
+                "reward": 5.097333411375682,
+                "creation_time": 1749215387.525682,
+                "auxillary_file_paths": [
+                    "results\\3_maze5x5condrittirewardbassi3\\CubeAgent\\CubeAgent-639534.pt"
+                ]
+            },
+            {
+                "steps": 659920,
+                "file_path": "results\\3_maze5x5condrittirewardbassi3\\CubeAgent\\CubeAgent-659920.onnx",
+                "reward": -10.015249967575073,
+                "creation_time": 1749215424.408306,
+                "auxillary_file_paths": [
+                    "results\\3_maze5x5condrittirewardbassi3\\CubeAgent\\CubeAgent-659920.pt"
+                ]
+            },
+            {
+                "steps": 679344,
+                "file_path": "results\\3_maze5x5condrittirewardbassi3\\CubeAgent\\CubeAgent-679344.onnx",
+                "reward": -5.989714452198574,
+                "creation_time": 1749215454.9974904,
+                "auxillary_file_paths": [
+                    "results\\3_maze5x5condrittirewardbassi3\\CubeAgent\\CubeAgent-679344.pt"
+                ]
+            },
+            {
+                "steps": 699860,
+                "file_path": "results\\3_maze5x5condrittirewardbassi3\\CubeAgent\\CubeAgent-699860.onnx",
+                "reward": -1.7436668872833252,
+                "creation_time": 1749215484.0596933,
+                "auxillary_file_paths": [
+                    "results\\3_maze5x5condrittirewardbassi3\\CubeAgent\\CubeAgent-699860.pt"
+                ]
+            },
+            {
+                "steps": 712979,
+                "file_path": "results\\3_maze5x5condrittirewardbassi3\\CubeAgent\\CubeAgent-712979.onnx",
+                "reward": -10.133000373840332,
+                "creation_time": 1749215570.3943667,
+                "auxillary_file_paths": [
+                    "results\\3_maze5x5condrittirewardbassi3\\CubeAgent\\CubeAgent-712979.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 712979,
+            "file_path": "results\\3_maze5x5condrittirewardbassi3\\CubeAgent.onnx",
+            "reward": -10.133000373840332,
+            "creation_time": 1749215570.3943667,
+            "auxillary_file_paths": [
+                "results\\3_maze5x5condrittirewardbassi3\\CubeAgent\\CubeAgent-712979.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.6.0+cu126"
+    }
+}

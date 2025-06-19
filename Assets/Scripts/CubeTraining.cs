@@ -62,7 +62,6 @@ public class CubeTraining : Agent
     private GameObject lastVisitedCell = null;
     private GameObject cellBeforeJump;
     private bool jumpedOverObstacle = false;
-    private bool episodeDone = false;
 
 
     public override void Initialize()
@@ -75,7 +74,8 @@ public class CubeTraining : Agent
 
     public override void OnEpisodeBegin()
     {
-        episodeDone = false;
+        Debug.Log("Episodio numero: " + Academy.Instance.EnvironmentParameters.GetWithDefault("episode_number", 0));
+
 
         transform.localPosition = startPosition;
         rb.linearVelocity = Vector3.zero;
@@ -234,7 +234,7 @@ public class CubeTraining : Agent
 
     public override void OnActionReceived(ActionBuffers actions)
     {
-        if (episodeDone) return;  // blocca tutto
+
 
         Vector3 move = transform.forward * moveSpeed * Time.deltaTime;
         float rotationSpeed = moveSpeed * 0.6f;
@@ -343,7 +343,7 @@ public class CubeTraining : Agent
 
     private void ApplyReward(float value, string reason)
     {
-        if (episodeDone) return;
+      
         AddReward(value);
         //Debug.Log($"[Reward] {value} for {reason}");
     }
@@ -362,12 +362,12 @@ public class CubeTraining : Agent
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Target") && !episodeDone)
+        if (other.gameObject.CompareTag("Target"))
         {
-            episodeDone = true;
             SetReward(rewardSettings.hitExit);
-            Debug.Log($"Set reward: {rewardSettings.hitExit}, totale: {GetCumulativeReward()}");
             EndEpisode();
+            Debug.Log($"[Reward] {rewardSettings.hitExit} for hitting the exit wall.");
+
         }
     }
 

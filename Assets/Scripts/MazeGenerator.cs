@@ -80,7 +80,8 @@ public class MazeGenerator : MonoBehaviour
         //setto dimensioni della camera in base alla dimensione
 
         // Imposta orthographicSize per vedere tutto il labirinto
-        topCamera.orthographicSize = width * 2f; // padding opzionale, tipo 1f
+        if (topCamera != null)
+            topCamera.orthographicSize = width * 2f; // padding opzionale, tipo 1f
 
     }
 

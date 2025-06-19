@@ -305,21 +305,21 @@ MonoBehaviour:
   moveSpeed: 6
   canAgentJump: 1
   timeScale: 20
-  numberOfObstacles: 5
+  numberOfObstacles: 7
   obstaclePrefab: {fileID: 7580302845478160203, guid: 5158c943088ae4541a8fe8c217b0311e, type: 3}
   floor: {fileID: 0}
   wall: {fileID: 0}
   rewardSettings:
     fallingInVoid: -10
-    inAirNotOnGround: 0.001
+    inAirNotOnGround: 0.1
     oneJump: -0.001
     notStraightMovement: -0.005
     eachStep: -0.001
-    exploreNotVisitedCell: 0.1
+    exploreNotVisitedCell: 0.3
     exploreVisitedCell: -0.05
     hitExit: 10
     hitWall: -10
-    jumpedOverObstacle: 0.05
+    jumpedOverObstacle: 0.5
     hitObstacle: -10
 --- !u!114 &4781502357287396627
 MonoBehaviour:
@@ -343,7 +343,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 12ae1dfd8dc016343bd28e8192d96ffb, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: 18db408b5efbfd043b9b63e1000a113f, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: CubeAgent

@@ -21,7 +21,6 @@ public class CubeAgent : Agent
     public GameObject flowers; // Prefab del muro da generare
 
     private Rigidbody rb;
-    private bool episodeEnded = false;
     private Vector3 startPosition;
     private bool isGrounded = false; // Variabile per controllare se l'agente è a terra
     private int nonStraightMoveCount = 0; // Contatore dei movimenti non dritti
@@ -47,9 +46,9 @@ public class CubeAgent : Agent
 
 
     public override void OnEpisodeBegin()
+    
     {
-        if (!episodeEnded)
-        {
+        
             totalVisitedCells = 0;
             transform.localPosition = startPosition;
             nonStraightMoveCount = 0; // Resetta il contatore dei movimenti non dritti
@@ -67,7 +66,7 @@ public class CubeAgent : Agent
             this.transform.rotation = Quaternion.Euler(Vector3.up * Random.Range(0f, 360f));
 
             //PickWallAsTarget();
-        }
+        
 
     }
 
@@ -500,7 +499,6 @@ public class CubeAgent : Agent
             SetReward(10f);
             mazeController.TargetReached(totalVisitedCells);
             //episodio terminato e disattivo agente
-            episodeEnded = true;
             this.enabled = false;  // Disattiva l'agente
 
         }
@@ -520,7 +518,6 @@ public class CubeAgent : Agent
 
     public void RestartEpisode()
     {
-        episodeEnded = false;
         this.enabled = true; // Riattiva l'agente
         mazeController.ResetText();
         EndEpisode(); 

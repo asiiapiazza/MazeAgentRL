@@ -1,41 +1,43 @@
 ﻿
+using NUnit.Framework.Internal;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 [System.Serializable]
 public class RewardSettings
 {
-    public float fallingInVoid = -10f;
-    public float inAirNotOnGround = 0.01f;
+   public float fallingInVoid = -10f;
+    public float inAirNotOnGround = 0.1f;
     public float oneJump = -0.001f;
-    public float notStraightMovement = -0.005f;
     public float eachStep = -0.001f;
-    public float exploreNotVisitedCell = 0.1f;
+    public float  exploreNotVisitedCell = 0.1f;
     public float exploreVisitedCell = -0.001f;
     public float hitExit = 10f;
-    public float hitWall = -5f;
+    public float hitWall = -10f;
     public float jumpedOverObstacle = 0.1f;
-    public float hitObstacle = -10f;
+     public float hitObstacle = -10f;
 
     public void ResetToDefaults()
     {
         fallingInVoid = -10f;
         inAirNotOnGround = 0.1f;
         oneJump = -0.001f;
-        notStraightMovement = -0.005f;
         eachStep = -0.001f;
         exploreNotVisitedCell = 0.1f;
         exploreVisitedCell = -0.001f;
         hitExit = 10f;
-        hitWall = -5f;
+        hitWall = -10f;
         jumpedOverObstacle = 0.1f;
         hitObstacle = -10f;
     }
+
 }
 
 public class CubeTraining : Agent
@@ -53,7 +55,6 @@ public class CubeTraining : Agent
     private Rigidbody rb;
     private Vector3 startPosition;
     private bool isGrounded = false;
-    private int nonStraightMoveCount = 0;
 
     private List<Transform> cells = new List<Transform>();
     private Transform[] floorCells;
@@ -62,20 +63,38 @@ public class CubeTraining : Agent
     private GameObject lastVisitedCell = null;
     private GameObject cellBeforeJump;
     private bool jumpedOverObstacle = false;
+    private int numberOfJumps = 0; // Contatore dei salti effettuati
+    bool success = false;
+    int steps = 0;
+    float rewardCumulative = 0;
+    private BenchmarkLogger logger;
 
-
+    private static int episodeCounter = 0;
+    private int visitedUniqueCell = 0; // Contatore totale delle celle visitate
+    private int totalCells = 0;
+    private int ostacoliSuperati = 0;
+    private int totalRivisited = 0; // Contatore delle celle rivisitate
     public override void Initialize()
     {
         Time.timeScale = timeScale;
         rb = GetComponent<Rigidbody>();
         startPosition = transform.localPosition;
-    }
+        logger = FindObjectOfType<BenchmarkLogger>();
 
+    }
 
     public override void OnEpisodeBegin()
     {
-        Debug.Log("Episodio numero: " + Academy.Instance.EnvironmentParameters.GetWithDefault("episode_number", 0));
 
+        logger?.LogEpisode(success, steps, visitedUniqueCell, totalRivisited, totalCells, rewardCumulative, numberOfJumps, RatioRivisitedCells());
+
+        episodeCounter++;
+        visitedUniqueCell = 0;
+        totalRivisited = 0;
+        totalCells = 0;
+        ostacoliSuperati = 0;
+        numberOfJumps = 0;
+        success = false;
 
         transform.localPosition = startPosition;
         rb.linearVelocity = Vector3.zero;
@@ -184,8 +203,9 @@ public class CubeTraining : Agent
         AddNeighborObservations(currentCell.transform, Vector3.back, sensor);
         AddNeighborObservations(currentCell.transform, Vector3.left, sensor);
         AddNeighborObservations(currentCell.transform, Vector3.right, sensor);
-    }
 
+        //per ogni cella adiacente alla currentcell, raccogli informazione sui vicini
+    }
 
     private void AddCellObservation(Transform cell, VectorSensor sensor)
     {
@@ -247,18 +267,16 @@ public class CubeTraining : Agent
 
         switch (actions.DiscreteActions[1])
         {
-            case 1: transform.Rotate(0, rotationSpeed, 0); nonStraightMoveCount++; break;
-            case 2: transform.Rotate(0, -rotationSpeed, 0); nonStraightMoveCount++; break;
+            case 1: transform.Rotate(0, rotationSpeed, 0); break;
+            case 2: transform.Rotate(0, -rotationSpeed, 0); break;
         }
 
         if (canAgentJump && actions.DiscreteActions[2] == 1 && IsGrounded())
         {
+            numberOfJumps++;
             ApplyReward(rewardSettings.oneJump, "Jump");
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, 5f, 0f);
         }
-
-        //if (nonStraightMoveCount > StepCount * 0.5f)
-        //    ApplyReward(rewardSettings.notStraightMovement, "NotStraight");
 
         UpdateCellStatus();
         if (currentCell.CompareTag("Floor"))
@@ -289,6 +307,8 @@ public class CubeTraining : Agent
                 renderer.material.color = Color.cyan;
 
             cellVisitCount[currentCell.transform]++;
+            visitedUniqueCell++;
+            totalCells++;
 
         }
         // La cella è stata esplorata, ma la visitiamo di nuovo
@@ -310,10 +330,20 @@ public class CubeTraining : Agent
                 renderer.material.color = Color.Lerp(Color.cyan, Color.blue, intensity);
             }
 
-            if (visits > 1)
-                ApplyReward(rewardSettings.exploreVisitedCell * visits, "RevisitCell x" + visits);
+            if (visits > 5)
+            {
+                SetReward(rewardSettings.exploreVisitedCell*visits);
+                EndEpisode();
+            }
+            else if (visits == 2)
+            {
+                ApplyReward(rewardSettings.exploreNotVisitedCell*0.3f, "NewCell");
+
+            }
 
 
+            totalCells++;
+            totalRivisited++;
         }
         UpdateCellStatus();  // Aggiorna la cella corrente e la cella precedente
     }
@@ -324,6 +354,10 @@ public class CubeTraining : Agent
         if (transform.position.y < 0)
         {
             SetReward(rewardSettings.fallingInVoid);
+            success = false;
+            steps = StepCount;
+            rewardCumulative = GetCumulativeReward();
+
             EndEpisode();
             return;
         }
@@ -344,7 +378,7 @@ public class CubeTraining : Agent
     private void ApplyReward(float value, string reason)
     {
       
-        AddReward(value);
+        //AddReward(value);
         //Debug.Log($"[Reward] {value} for {reason}");
     }
 
@@ -354,6 +388,10 @@ public class CubeTraining : Agent
         if (grounded && hit.collider.CompareTag("Obstacle"))
         {
             SetReward(rewardSettings.hitObstacle);
+            success = false;
+            steps = StepCount;
+            rewardCumulative = GetCumulativeReward();
+
             EndEpisode();
         }
         return grounded;
@@ -365,9 +403,10 @@ public class CubeTraining : Agent
         if (other.gameObject.CompareTag("Target"))
         {
             SetReward(rewardSettings.hitExit);
+            success = true;
+            steps = StepCount;
+            rewardCumulative = GetCumulativeReward();
             EndEpisode();
-            Debug.Log($"[Reward] {rewardSettings.hitExit} for hitting the exit wall.");
-
         }
     }
 
@@ -375,7 +414,12 @@ public class CubeTraining : Agent
     {
         if (collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Obstacle"))
         {
+            success = false;
             SetReward(rewardSettings.hitWall);
+            steps = StepCount;
+            rewardCumulative = GetCumulativeReward();
+            ostacoliSuperati++;
+
             EndEpisode();
         }
         else if (collision.gameObject.CompareTag("Floor"))
@@ -383,10 +427,20 @@ public class CubeTraining : Agent
             isGrounded = true;
             if (jumpedOverObstacle && cellBeforeJump != null && collision.gameObject != cellBeforeJump)
             {
+                ostacoliSuperati++;
                 ApplyReward(rewardSettings.jumpedOverObstacle, "JumpedObstacle");
             }
             jumpedOverObstacle = false;
         }
+
+    }
+
+    private float RatioRivisitedCells()
+    {
+      
+        int totaleCelle = cellVisitCount.Count;
+        int celleAlmenoN = cellVisitCount.Values.Count(v => v >= 5);
+        return (float)celleAlmenoN / totaleCelle;
 
     }
 
@@ -397,12 +451,17 @@ public class CubeTraining : Agent
         if (transform.position.y < 0)
         {
             SetReward(rewardSettings.fallingInVoid);
+            success = false;
+            steps = StepCount;
+            rewardCumulative = GetCumulativeReward();
+
             EndEpisode();
-            return;
         }
 
-
+ 
     }
+
+
     public override void Heuristic(in ActionBuffers actionsOut)
     {
         var actions = actionsOut.DiscreteActions;
@@ -436,7 +495,7 @@ public class CubeTraining : Agent
             {
                 randomCell = cells[Random.Range(0, cells.Count)];
                 attempts++;
-                if (attempts > 10000) break;
+                if (attempts > 100000) break;
             }
             while (!AreNeighborsAccessible(randomCell) || IsCellDeadEnd(randomCell.gameObject));
 
@@ -475,15 +534,19 @@ public class CubeTraining : Agent
         return wallCount >= 3;
     }
 
-    void OnDrawGizmos()
-    {
-        foreach (Transform cell in cellVisitCount.Keys)
-        {
-            Bounds bounds = cell.GetComponent<Collider>().bounds;
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireCube(bounds.center, bounds.size);
-        }
-    }
+
+
+
+    //void OnDrawGizmos()
+    //{
+    //    foreach (Transform cell in cellVisitCount.Keys)
+    //    {
+    //        Bounds bounds = cell.GetComponent<Collider>().bounds;
+    //        Gizmos.color = Color.green;
+    //        Gizmos.DrawWireCube(bounds.center, bounds.size);
+    //    }
+    //}
+
 
 
 }

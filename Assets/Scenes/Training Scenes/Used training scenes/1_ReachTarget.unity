@@ -675,6 +675,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1953449326406281, guid: 3a4050949a1517b4a8e099ee7605fa09, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 308747147894899156, guid: 3a4050949a1517b4a8e099ee7605fa09, type: 3}
       propertyPath: timeScale
       value: 1
@@ -682,6 +686,10 @@ PrefabInstance:
     - target: {fileID: 1591619169530688933, guid: 3a4050949a1517b4a8e099ee7605fa09, type: 3}
       propertyPath: m_Name
       value: Straight Maze
+      objectReference: {fileID: 0}
+    - target: {fileID: 1591619169530688933, guid: 3a4050949a1517b4a8e099ee7605fa09, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4893319113768809752, guid: 3a4050949a1517b4a8e099ee7605fa09, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8848,6 +8856,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 308747147894899156, guid: 3a4050949a1517b4a8e099ee7605fa09, type: 3}
+      propertyPath: timeScale
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 1591619169530688933, guid: 3a4050949a1517b4a8e099ee7605fa09, type: 3}
       propertyPath: m_Name
       value: Straight Maze (19)
@@ -12569,6 +12581,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 308747147894899156, guid: 3a4050949a1517b4a8e099ee7605fa09, type: 3}
+      propertyPath: timeScale
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 1591619169530688933, guid: 3a4050949a1517b4a8e099ee7605fa09, type: 3}
       propertyPath: m_Name
       value: Straight Maze (18)
@@ -13003,6 +13019,10 @@ PrefabInstance:
     - target: {fileID: 1591619169530688933, guid: 3a4050949a1517b4a8e099ee7605fa09, type: 3}
       propertyPath: m_Name
       value: Straight Maze (108)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1591619169530688933, guid: 3a4050949a1517b4a8e099ee7605fa09, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4893319113768809752, guid: 3a4050949a1517b4a8e099ee7605fa09, type: 3}
       propertyPath: m_LocalPosition.x

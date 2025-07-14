@@ -12,7 +12,7 @@ public class RewardSettingsEditor : Editor
 
         EditorGUILayout.LabelField("📦 Agent Settings", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
-        agent.MaxStep = EditorGUILayout.IntField("Max Steps for training", agent.MaxStep);
+        agent.MaxStep = EditorGUILayout.IntField("Max Steps for episode", agent.MaxStep);
         agent.moveSpeed = EditorGUILayout.FloatField("Move Speed", agent.moveSpeed);
         agent.canAgentJump = EditorGUILayout.Toggle("Allow agent to jump", agent.canAgentJump);
         agent.timeScale = EditorGUILayout.IntField("Time Scale", agent.timeScale);
@@ -38,7 +38,6 @@ public class RewardSettingsEditor : Editor
         settings.fallingInVoid = EditorGUILayout.FloatField("Falling in Void", settings.fallingInVoid);
         settings.inAirNotOnGround = EditorGUILayout.FloatField("In Air Not on Ground", settings.inAirNotOnGround);
         settings.oneJump = EditorGUILayout.FloatField("One Jump", settings.oneJump);
-        settings.notStraightMovement = EditorGUILayout.FloatField("Not Straight Movement", settings.notStraightMovement);
         settings.eachStep = EditorGUILayout.FloatField("Each Step", settings.eachStep);
         settings.exploreNotVisitedCell = EditorGUILayout.FloatField("Explore Not Visited", settings.exploreNotVisitedCell);
         settings.exploreVisitedCell = EditorGUILayout.FloatField("Explore Visited Cell", settings.exploreVisitedCell);

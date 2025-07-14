@@ -5,7 +5,7 @@ using UnityEngine;
 public class OptionController : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public MazeGenerator mazeGenerator;
+    public MazeGeneratorTesting mazeGenerator;
     public GameObject minimap;
     public TMPro.TextMeshProUGUI text;
 

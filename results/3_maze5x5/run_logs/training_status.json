@@ -1,0 +1,65 @@
+{
+    "CubeAgent": {
+        "checkpoints": [
+            {
+                "steps": 939986,
+                "file_path": "results\\3_maze5x5provaancora\\CubeAgent\\CubeAgent-939986.onnx",
+                "reward": 8.778000235557556,
+                "creation_time": 1749139534.5361288,
+                "auxillary_file_paths": [
+                    "results\\3_maze5x5provaancora\\CubeAgent\\CubeAgent-939986.pt"
+                ]
+            },
+            {
+                "steps": 959834,
+                "file_path": "results\\3_maze5x5provaancora\\CubeAgent\\CubeAgent-959834.onnx",
+                "reward": 10.92977778116862,
+                "creation_time": 1749139603.4151196,
+                "auxillary_file_paths": [
+                    "results\\3_maze5x5provaancora\\CubeAgent\\CubeAgent-959834.pt"
+                ]
+            },
+            {
+                "steps": 979996,
+                "file_path": "results\\3_maze5x5provaancora\\CubeAgent\\CubeAgent-979996.onnx",
+                "reward": 10.61711784437591,
+                "creation_time": 1749139666.2685447,
+                "auxillary_file_paths": [
+                    "results\\3_maze5x5provaancora\\CubeAgent\\CubeAgent-979996.pt"
+                ]
+            },
+            {
+                "steps": 999995,
+                "file_path": "results\\3_maze5x5provaancora\\CubeAgent\\CubeAgent-999995.onnx",
+                "reward": 9.741310514252762,
+                "creation_time": 1749139734.7049754,
+                "auxillary_file_paths": [
+                    "results\\3_maze5x5provaancora\\CubeAgent\\CubeAgent-999995.pt"
+                ]
+            },
+            {
+                "steps": 1000020,
+                "file_path": "results\\3_maze5x5provaancora\\CubeAgent\\CubeAgent-1000020.onnx",
+                "reward": 9.862500190734863,
+                "creation_time": 1749139734.8190534,
+                "auxillary_file_paths": [
+                    "results\\3_maze5x5provaancora\\CubeAgent\\CubeAgent-1000020.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1000020,
+            "file_path": "results\\3_maze5x5provaancora\\CubeAgent.onnx",
+            "reward": 9.862500190734863,
+            "creation_time": 1749139734.8190534,
+            "auxillary_file_paths": [
+                "results\\3_maze5x5provaancora\\CubeAgent\\CubeAgent-1000020.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.6.0+cu126"
+    }
+}

@@ -10,13 +10,13 @@ public class MazeController : MonoBehaviour
 {
     public GameObject maze;
     public GameObject agent;
-    private CubeAgent script;
+    private CubeTesting script;
     public TMPro.TextMeshProUGUI text;
 
 
     private void Start()
     {
-        script = agent.GetComponent<CubeAgent>();
+        script = agent.GetComponent<CubeTesting>();
 
     }
 
@@ -44,7 +44,7 @@ public class MazeController : MonoBehaviour
     {
 
 
-        //agent.GetComponent<Agent>().SetModel("CubeAgent", model);
+        //agent.GetComponent<Agent>().SetModel("CubeTesting", model);
 
     }
 }

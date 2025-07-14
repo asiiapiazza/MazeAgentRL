@@ -1085,11 +1085,11 @@ MonoBehaviour:
   m_Model: {fileID: 5022602860645237092, guid: 18db408b5efbfd043b9b63e1000a113f, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 2
-  m_BehaviorName: CubeAgent2
+  m_BehaviorName: CubeAgent
   TeamId: 0
   m_UseChildSensors: 1
   m_UseChildActuators: 1
-  m_DeterministicInference: 0
+  m_DeterministicInference: 1
   m_ObservableAttributeHandling: 0
 --- !u!114 &622061140792121351
 MonoBehaviour:
@@ -1106,9 +1106,9 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 4000
-  moveSpeed: 5
-  canAgentJump: 1
+  MaxStep: 6000
+  moveSpeed: 6
+  canAgentJump: 0
   timeScale: 1
   flowerPrefab: {fileID: 2548887088315945888, guid: 801406997b9383a4da1e6e044286c53a, type: 3}
   floor: {fileID: 0}

@@ -56,7 +56,7 @@ public class MainMenuController : MonoBehaviour
 
             if (agent != null)
             {
-                CubeAgent script = agent.GetComponent<CubeAgent>();
+                CubeTesting script = agent.GetComponent<CubeTesting>();
 
                 //episodio gia iniziato? posso resettare
                 if (AgentState.bottoneCliccato == false)

@@ -11206,6 +11206,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Straight Maze with Obstacles
       objectReference: {fileID: 0}
+    - target: {fileID: 1517338767244521004, guid: 4c355fa6e1fb74d4b8c016f33250415f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5260580794903763617, guid: 4c355fa6e1fb74d4b8c016f33250415f, type: 3}
       propertyPath: timeScale
       value: 1
